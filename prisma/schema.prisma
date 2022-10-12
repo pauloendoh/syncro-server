@@ -13,11 +13,45 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(cuid())
   // googleId  String?  @unique
   username String @unique
   email    String @unique
   password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ratings Rating[]
+}
+
+enum ImdbItemType {
+  tvSeries
+  movie
+}
+
+model ImdbItem {
+  id          String       @id
+  title       String
+  type        ImdbItemType
+  imageUrl    String
+  year        Int?
+  avgRating   Float
+  ratingCount Int
+  plotSummary String       @default("")
+  ratings     Rating[]
+}
+
+model Rating {
+  id         String    @id @default(cuid())
+  imdbItem   ImdbItem? @relation(fields: [imdbItemId], references: [id])
+  imdbItemId String?
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  value  Int?
+
+  interestLevel Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
