@@ -2,7 +2,7 @@
   "name": "rest-express",
   "version": "1.0.0",
   "license": "MIT",
-  "engine": {
+  "engines": {
     "node": "14.17.4",
     "npm": "6.14.14"
   },
