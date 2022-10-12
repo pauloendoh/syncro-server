@@ -2,6 +2,10 @@
   "name": "rest-express",
   "version": "1.0.0",
   "license": "MIT",
+  "engine": {
+    "node": "14.17.4",
+    "npm": "6.14.14"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
