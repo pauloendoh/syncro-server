@@ -4,6 +4,7 @@ import {
   CurrentUser,
   Get,
   JsonController,
+  Param,
   Post,
 } from "routing-controllers"
 import { RatingService } from "./RatingService"
@@ -15,6 +16,14 @@ export class RatingController {
   @Get("/me/ratings")
   async findMyRatings(@CurrentUser({ required: true }) user: User) {
     return this.ratingService.findRatingsByUserId(user.id)
+  }
+
+  @Get("/user/:id/ratings")
+  async userRatings(
+    @CurrentUser({ required: true }) user: User,
+    @Param("id") id: string
+  ) {
+    return this.ratingService.findRatingsByUserId(id)
   }
 
   @Post("/me/ratings")

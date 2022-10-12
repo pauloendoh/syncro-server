@@ -17,4 +17,8 @@ export class ImdbItemService {
 
     return this.imdbItemRepository.createFromImdbSearch(imdbId, result)
   }
+
+  async findImdbItemsRatedByUserId(userId: string) {
+    return this.imdbItemRepository.findImdbItemsRatedByUserId(userId)
+  }
 }

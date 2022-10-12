@@ -27,4 +27,19 @@ export class ImdbItemRepository {
       },
     })
   }
+
+  findImdbItemsRatedByUserId(userId: string) {
+    return this.prismaClient.imdbItem.findMany({
+      include: {
+        ratings: true,
+      },
+      where: {
+        ratings: {
+          some: {
+            userId,
+          },
+        },
+      },
+    })
+  }
 }
