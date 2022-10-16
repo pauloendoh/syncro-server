@@ -34,7 +34,7 @@ model ImdbItem {
   id          String       @id
   title       String
   type        ImdbItemType
-  imageUrl    String
+  imageUrl    String       @default("")
   year        Int?
   avgRating   Float
   ratingCount Int

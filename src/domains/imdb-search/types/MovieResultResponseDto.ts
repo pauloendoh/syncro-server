@@ -1,3 +1,5 @@
+import { ImdbItem, Rating } from "@prisma/client"
+
 export interface Meta {
   operation: string
   requestId: string
@@ -85,6 +87,8 @@ export interface Result {
   legacyNameText: string
   name: string
   knownFor: KnownFor[]
+  myRating?: Rating
+  imdbItem?: ImdbItem
 }
 
 export interface MovieResultResponseDto {

@@ -4,7 +4,7 @@ import myRedis from "../../utils/redis/myRedisClient"
 import { redisKeys } from "../../utils/redis/redisKeys"
 import { urls } from "../../utils/urls"
 import { ImdbItemDetailsResponse } from "../imdb-item/types/ImdbItemDetailsGetDto"
-import { MovieResultResponseDto } from "../search/types/MovieResultResponseDto"
+import { MovieResultResponseDto } from "./types/MovieResultResponseDto"
 
 export class ImdbSearchRepository {
   constructor(private imdbAxios = myImdbAxios) {}

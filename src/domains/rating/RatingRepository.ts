@@ -12,6 +12,17 @@ export class RatingRepository {
     })
   }
 
+  findRatingsByUserIdAndItemsIds(userId: string, itemsIds: string[]) {
+    return this.prismaClient.rating.findMany({
+      where: {
+        userId,
+        imdbItemId: {
+          in: itemsIds,
+        },
+      },
+    })
+  }
+
   createRating(rating: Rating) {
     return this.prismaClient.rating.create({
       data: { ...rating, id: undefined },

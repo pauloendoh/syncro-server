@@ -18,7 +18,7 @@ export class ImdbItemRepository {
       data: {
         id,
         avgRating: data.ratings?.rating || 0,
-        imageUrl: data.title.image.url,
+        imageUrl: data.title.image?.url,
         ratingCount: data.ratings?.ratingCount || 0,
         title: data.title.title,
         type: data.title.titleType as ImdbItemType,
@@ -38,6 +38,16 @@ export class ImdbItemRepository {
           some: {
             userId,
           },
+        },
+      },
+    })
+  }
+
+  findImdbItemsByIds(imdbIds: string[]) {
+    return this.prismaClient.imdbItem.findMany({
+      where: {
+        id: {
+          in: imdbIds,
         },
       },
     })
