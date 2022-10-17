@@ -1,28 +1,31 @@
 import { ImdbItemRepository } from "../imdb-item/ImdbItemRepository"
+import { ImdbSearchRepository } from "../imdb-search/ImdbSearchRepository"
+import { Result } from "../imdb-search/types/MovieResultResponseDto"
 import { RatingRepository } from "../rating/RatingRepository"
-import { ImdbSearchRepository } from "./ImdbSearchRepository"
-import { Result } from "./types/MovieResultResponseDto"
+import { UserRepository } from "../user/UserRepository"
 import { SearchParams } from "./types/SearchParams"
 
-export class ImdbSearchService {
+export class SearchService {
   constructor(
     private imdbSearchRepository = new ImdbSearchRepository(),
     private imdbItemRepository = new ImdbItemRepository(),
-    private ratingRepo = new RatingRepository()
+    private ratingRepo = new RatingRepository(),
+    private userRepo = new UserRepository()
   ) {}
 
+  overallSearch = async (params: SearchParams, requesterId: string) => {
+    if (params.type === "tv series") {
+      return this.searchSeries(params.q, requesterId)
+    }
+
+    return this.searchUsers(params.q)
+  }
+
   searchSeries = async (
-    params: SearchParams,
+    query: string,
     requesterId: string
   ): Promise<Result[]> => {
-    const { results } = await this.imdbSearchRepository.searchImdbSeries(
-      params.q
-    )
-    // if (params.type === "tv series") {
-    //   return imdbResults.results.filter((r) => r.titleType === "tvSeries")
-    // }
-
-    // return imdbResults.results.filter((r) => r.titleType === "movie")
+    const { results } = await this.imdbSearchRepository.searchImdbSeries(query)
 
     const imdbIds = results.map((r) => r.id)
     const imdbItems = await this.imdbItemRepository.findImdbItemsByIds(imdbIds)
@@ -36,5 +39,9 @@ export class ImdbSearchService {
       imdbItem: imdbItems.find((item) => item.id === result.id),
       myRating: myRatings.find((rating) => rating.imdbItemId === result.id),
     }))
+  }
+
+  searchUsers = async (query: string) => {
+    return this.userRepo.searchUsersByUsername(query)
   }
 }

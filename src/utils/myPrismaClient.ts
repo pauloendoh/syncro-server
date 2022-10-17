@@ -1,5 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client"
 
-const myPrismaClient = new PrismaClient();
+// to minimize connection polls, use only one instance of prisma
+const myPrismaClient = new PrismaClient()
 
-export default myPrismaClient;
+export default myPrismaClient

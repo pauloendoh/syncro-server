@@ -5,5 +5,5 @@ export class SearchParams {
   q: string
 
   @IsString()
-  type: "movie" | "tv series"
+  type: "movie" | "tv series" | "users"
 }

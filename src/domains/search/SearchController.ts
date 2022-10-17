@@ -5,18 +5,18 @@ import {
   JsonController,
   QueryParams,
 } from "routing-controllers"
-import { ImdbSearchService } from "./ImdbSearchService"
+import { SearchService } from "./SearchService"
 import { SearchParams } from "./types/SearchParams"
 
 @JsonController("/search")
-export class ImdbSearchController {
-  constructor(private searchService = new ImdbSearchService()) {}
+export class SearchController {
+  constructor(private searchService = new SearchService()) {}
 
   @Get()
   async search(
     @CurrentUser({ required: true }) user: User,
     @QueryParams({ required: true }) searchParams: SearchParams
   ) {
-    return this.searchService.searchSeries(searchParams, user.id)
+    return this.searchService.overallSearch(searchParams, user.id)
   }
 }
