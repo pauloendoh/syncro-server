@@ -6,4 +6,8 @@ export class UserService {
   async findUserInfo(userId: string) {
     return this.userRepo.findUserInfoByUserId(userId)
   }
+
+  async findUserItems(userId: string) {
+    return this.userRepo.findUserItems(userId)
+  }
 }

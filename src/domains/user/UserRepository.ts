@@ -24,4 +24,40 @@ export class UserRepository {
       select: userSelectFields,
     })
   }
+
+  findUserItems(userId: string) {
+    return this.prismaClient.imdbItem.findMany({
+      where: {
+        OR: [
+          {
+            ratings: {
+              some: {
+                userId,
+              },
+            },
+          },
+          {
+            interests: {
+              some: {
+                userId,
+              },
+            },
+          },
+        ],
+      },
+
+      include: {
+        interests: {
+          where: {
+            userId,
+          },
+        },
+        ratings: {
+          where: {
+            userId,
+          },
+        },
+      },
+    })
+  }
 }

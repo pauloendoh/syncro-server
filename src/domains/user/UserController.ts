@@ -13,4 +13,12 @@ export class UserController {
   ) {
     return this.userService.findUserInfo(userId)
   }
+
+  @Get("/user/:userId/items")
+  async findUserItems(
+    @Param("userId") userId: string,
+    @CurrentUser({ required: true }) user: User
+  ) {
+    return this.userService.findUserItems(userId)
+  }
 }
