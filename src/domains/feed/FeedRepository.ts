@@ -15,7 +15,7 @@ export class FeedRepository {
       },
       where: {
         userId: requesterId,
-        value: {
+        ratingValue: {
           gt: 0,
         },
       },
