@@ -15,4 +15,13 @@ export class UserRepository {
       },
     })
   }
+
+  findUserInfoByUserId(userId: string) {
+    return this.prismaClient.user.findFirst({
+      where: {
+        id: userId,
+      },
+      select: userSelectFields,
+    })
+  }
 }
