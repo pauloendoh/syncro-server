@@ -47,9 +47,9 @@ model Rating {
   imdbItem   ImdbItem? @relation(fields: [imdbItemId], references: [id])
   imdbItemId String?
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-  value  Int?
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
+  ratingValue Int?
 
   interestLevel Int?
 
