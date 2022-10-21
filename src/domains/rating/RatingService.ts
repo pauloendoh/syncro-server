@@ -16,8 +16,7 @@ export class RatingService {
   }
 
   async createRating(rating: Rating, requesterId: string) {
-    if (rating.ratingValue === null && rating.interestLevel === null)
-      return null
+    if (rating.ratingValue === null) return null
 
     rating.userId = requesterId
     return this.ratingRepo.createRating(rating)
@@ -30,7 +29,7 @@ export class RatingService {
     )
     if (!isAllowed) throw new ForbiddenError("User cannot update this rating.")
 
-    if (rating.ratingValue === null && rating.interestLevel === null) {
+    if (rating.ratingValue === null) {
       await this.ratingRepo.deleteRating(rating.id)
       return null
     }

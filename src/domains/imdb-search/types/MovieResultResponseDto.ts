@@ -1,4 +1,4 @@
-import { ImdbItem, Rating } from "@prisma/client"
+import { ImdbItem, Interest, Rating } from "@prisma/client"
 
 export interface Meta {
   operation: string
@@ -88,6 +88,7 @@ export interface Result {
   name: string
   knownFor: KnownFor[]
   myRating?: Rating
+  myInterest?: Interest
   imdbItem?: ImdbItem
 }
 
