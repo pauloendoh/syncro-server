@@ -1,5 +1,6 @@
 import { Rating } from "@prisma/client"
 import myPrismaClient from "../../utils/myPrismaClient"
+import { userSelectFields } from "../../utils/prisma/fields/user/userSelectFields"
 
 export class RatingRepository {
   constructor(private prismaClient = myPrismaClient) {}
@@ -51,6 +52,37 @@ export class RatingRepository {
       where: {
         id: ratingId,
         userId,
+      },
+    })
+  }
+
+  findUsersWhoRatedSameItems(
+    requesterId: string,
+    requesterImdbItemIds: string[]
+  ) {
+    return this.prismaClient.user.findMany({
+      where: {
+        NOT: {
+          id: requesterId,
+        },
+        ratings: {
+          some: {
+            imdbItemId: {
+              in: requesterImdbItemIds,
+            },
+          },
+        },
+      },
+
+      select: {
+        ...userSelectFields,
+        ratings: {
+          where: {
+            imdbItemId: {
+              in: requesterImdbItemIds,
+            },
+          },
+        },
       },
     })
   }
