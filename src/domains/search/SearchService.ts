@@ -29,7 +29,9 @@ export class SearchService {
   ): Promise<Result[]> => {
     const { results } = await this.imdbSearchRepository.searchImdbSeries(query)
 
-    const imdbIds = results.map((r) => r.id)
+    if (!results) return []
+
+    const imdbIds = results.map((r) => r.id) || []
     const imdbItems = await this.imdbItemRepository.findImdbItemsByIds(imdbIds)
     const myRatings = await this.ratingRepo.findRatingsByUserIdAndItemsIds(
       requesterId,
