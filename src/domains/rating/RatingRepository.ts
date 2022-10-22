@@ -13,6 +13,19 @@ export class RatingRepository {
     })
   }
 
+  findRatingsByUsersIds(usersIds: string[]) {
+    return this.prismaClient.rating.findMany({
+      where: {
+        userId: {
+          in: usersIds,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  }
+
   findRatingsByUserIdAndItemsIds(userId: string, itemsIds: string[]) {
     return this.prismaClient.rating.findMany({
       where: {

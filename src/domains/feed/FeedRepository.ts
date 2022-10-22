@@ -1,20 +1,21 @@
 import myPrismaClient from "../../utils/myPrismaClient"
+import { userSelectFields } from "../../utils/prisma/fields/user/userSelectFields"
 
 export class FeedRepository {
   constructor(private prismaClient = myPrismaClient) {}
 
-  findHomeItems = async (requesterId: string) => {
+  findHomeRatingsByUsersIds = async (usersIds: string[]) => {
     return this.prismaClient.rating.findMany({
       include: {
         user: {
-          select: {
-            username: true,
-          },
+          select: userSelectFields,
         },
         imdbItem: true,
       },
       where: {
-        userId: requesterId,
+        userId: {
+          in: usersIds,
+        },
         ratingValue: {
           gt: 0,
         },

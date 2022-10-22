@@ -24,6 +24,9 @@ model User {
 
   ratings   Rating[]
   interests Interest[]
+
+  follows    Follow[] @relation("following_users")
+  followedBy Follow[] @relation("followers")
 }
 
 enum ImdbItemType {
@@ -59,13 +62,26 @@ model Rating {
 
 model Interest {
   id         String    @id @default(cuid())
-  imdbItem   ImdbItem? @relation(fields: [imdbItemId], references: [id])
+  imdbItem   ImdbItem? @relation(fields: [imdbItemId], references: [id], onDelete: Cascade)
   imdbItemId String?
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   interestLevel Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Follow {
+  id String @id @default(cuid())
+
+  follower   User   @relation(fields: [followerId], references: [id], name: "following_users")
+  followerId String
+
+  followingUser   User   @relation(fields: [followingUserId], references: [id], name: "followers")
+  followingUserId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
