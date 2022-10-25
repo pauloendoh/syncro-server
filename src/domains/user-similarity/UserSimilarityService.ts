@@ -1,28 +1,44 @@
 import { Rating } from "@prisma/client"
 import { InternalServerError } from "routing-controllers"
+import { InterestRepository } from "../interest/InterestRepository"
 import { RatingRepository } from "../rating/RatingRepository"
 import { SimpleUserDto } from "../user/types/SimpleUserDto"
 import { UserSimilarityDto } from "./types/UserSimilarityDto"
 
 export class UserSimilarityService {
-  constructor(private ratingRepo = new RatingRepository()) {}
+  constructor(
+    private ratingRepo = new RatingRepository(),
+    private interestRepo = new InterestRepository()
+  ) {}
 
   async findSimilarUsers(requesterId: string) {
     const requesterRatings = await this.ratingRepo.findRatingsByUserId(
       requesterId
     )
 
+    const requesterHighInterests = await this.interestRepo.findHighInterestsByUserId(
+      requesterId
+    )
+    const highInterestImdbIds = requesterHighInterests.map((i) =>
+      String(i.imdbItemId)
+    )
+
     const imdbItemIds = requesterRatings
       .filter((r) => typeof r.imdbItemId !== null)
       .map((r) => String(r.imdbItemId))
 
-    const users = await this.ratingRepo.findUsersWhoRatedSameItems(
+    const usersWhoRatedSameItems = await this.ratingRepo.findUsersWhoRatedSameItems(
       requesterId,
       imdbItemIds
     )
 
+    const usersWhoHighInterestsSameItems = await this.interestRepo.findUsersWhoHighInteretSameItems(
+      requesterId,
+      highInterestImdbIds
+    )
+
     const similarities = await Promise.all(
-      users.map((u) => {
+      usersWhoRatedSameItems.map((u) => {
         const userB = { ...u }
 
         // @ts-expect-error
@@ -32,6 +48,9 @@ export class UserSimilarityService {
           userARatings: requesterRatings,
           userB,
           userBRatings: u.ratings,
+          highInterestCount:
+            usersWhoHighInterestsSameItems.find((c) => c.userId === u.id)
+              ?._count.userId || 0,
         })
       })
     )
@@ -43,8 +62,9 @@ export class UserSimilarityService {
     userARatings: Rating[]
     userB: SimpleUserDto
     userBRatings: Rating[]
+    highInterestCount: number
   }): Promise<UserSimilarityDto> => {
-    const { userARatings, userB, userBRatings } = params
+    const { userARatings, userB, userBRatings, highInterestCount } = params
 
     const ratedSameItemsCount = userBRatings.length
     const percentageQuantityFromUserA =
@@ -82,6 +102,7 @@ export class UserSimilarityService {
       ratedSameItemsCount,
       percentageQuantityFromUserA,
       overallPercentage,
+      highInterestCount,
     }
   }
 

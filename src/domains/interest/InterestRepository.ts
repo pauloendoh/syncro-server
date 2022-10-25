@@ -12,6 +12,17 @@ export class InterestRepository {
     })
   }
 
+  findHighInterestsByUserId(userId: string) {
+    return this.prismaClient.interest.findMany({
+      where: {
+        userId,
+        interestLevel: {
+          equals: 3,
+        },
+      },
+    })
+  }
+
   findInterestsByUserIdAndItemsIds(userId: string, itemsIds: string[]) {
     return this.prismaClient.interest.findMany({
       where: {
@@ -51,6 +62,29 @@ export class InterestRepository {
       where: {
         id: interestId,
         userId,
+      },
+    })
+  }
+
+  async findUsersWhoHighInteretSameItems(
+    requesterId: string,
+    imdbIds: string[]
+  ) {
+    return this.prismaClient.interest.groupBy({
+      where: {
+        AND: {
+          NOT: {
+            userId: requesterId,
+          },
+          interestLevel: 3,
+          imdbItemId: {
+            in: imdbIds,
+          },
+        },
+      },
+      by: ["userId"],
+      _count: {
+        userId: true,
       },
     })
   }
