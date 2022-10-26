@@ -5,7 +5,7 @@ import path from "path"
 
 import aws from "aws-sdk"
 
-const UPLOAD_PATH = path.resolve(__dirname, "../../../public/uploads")
+const UPLOAD_PATH = path.resolve(__dirname, "../../public/uploads")
 
 const localDiskStorage = diskStorage({
   destination: (req, file, cb) => {
