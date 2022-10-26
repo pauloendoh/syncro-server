@@ -39,7 +39,7 @@ export class AuthService {
     const salt = await genSalt(10)
     const hashedPassword = await hash(dto.password1, salt)
 
-    const savedUser = await myPrismaClient.user.create({
+    const createdUser = await myPrismaClient.user.create({
       data: {
         email: dto.email,
         password: hashedPassword,
@@ -47,8 +47,14 @@ export class AuthService {
       },
     })
 
-    const { token, expiresAt } = this.getSignInToken(savedUser)
-    return new AuthUserGetDto(savedUser, token, expiresAt)
+    await myPrismaClient.profile.create({
+      data: {
+        userId: createdUser.id,
+      },
+    })
+
+    const { token, expiresAt } = this.getSignInToken(createdUser)
+    return new AuthUserGetDto(createdUser, token, expiresAt)
   }
 
   public async login(payload: LoginDto) {
