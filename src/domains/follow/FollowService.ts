@@ -20,4 +20,8 @@ export class FollowService {
   async findFollowingUsers(followerId: string) {
     return this.followRepo.findFollowingUsers(followerId)
   }
+
+  async findFollowers(userId: string) {
+    return this.followRepo.findFollowers(userId)
+  }
 }

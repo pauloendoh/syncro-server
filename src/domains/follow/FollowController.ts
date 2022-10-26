@@ -24,4 +24,20 @@ export class FollowController {
   async findMyFollowingUsers(@CurrentUser({ required: true }) requester: User) {
     return this.followService.findFollowingUsers(requester.id)
   }
+
+  @Get("/user/:userId/followers")
+  async findFollowers(
+    @CurrentUser({ required: true }) requester: User,
+    @Param("userId") userId: string
+  ) {
+    return this.followService.findFollowers(userId)
+  }
+
+  @Get("/user/:userId/following-users")
+  async findFollowingUsers(
+    @CurrentUser({ required: true }) requester: User,
+    @Param("userId") userId: string
+  ) {
+    return this.followService.findFollowingUsers(userId)
+  }
 }

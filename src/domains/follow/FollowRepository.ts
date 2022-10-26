@@ -1,4 +1,5 @@
 import myPrismaClient from "../../utils/myPrismaClient"
+import { userSelectFields } from "../../utils/prisma/fields/user/userSelectFields"
 
 export class FollowRepository {
   constructor(private prismaClient = myPrismaClient) {}
@@ -33,6 +34,30 @@ export class FollowRepository {
     return this.prismaClient.follow.findMany({
       where: {
         followerId,
+      },
+      include: {
+        followingUser: {
+          select: userSelectFields,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  }
+
+  async findFollowers(userId: string) {
+    return this.prismaClient.follow.findMany({
+      where: {
+        followingUserId: userId,
+      },
+      include: {
+        follower: {
+          select: userSelectFields,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     })
   }
