@@ -14,6 +14,6 @@ export class FeedService {
 
     const userIds = follows.map((f) => f.followingUserId)
 
-    return this.feedRepo.findHomeRatingsByUsersIds([requesterId, ...userIds])
+    return this.feedRepo.findHomeRatingsByUsersIds(userIds)
   }
 }
