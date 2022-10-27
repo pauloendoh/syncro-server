@@ -1,10 +1,11 @@
 import { ImdbItemRepository } from "../imdb-item/ImdbItemRepository"
 import { ImdbSearchRepository } from "../imdb-search/ImdbSearchRepository"
-import { Result } from "../imdb-search/types/MovieResultResponseDto"
+import { Result } from "../imdb-search/types/ImdbResultResponseDto"
 import { InterestRepository } from "../interest/InterestRepository"
 import { RatingRepository } from "../rating/RatingRepository"
 import { UserRepository } from "../user/UserRepository"
 import { SearchParams } from "./types/SearchParams"
+import { SyncroItemType } from "./types/SyncroItemType"
 
 export class SearchService {
   constructor(
@@ -16,18 +17,22 @@ export class SearchService {
   ) {}
 
   overallSearch = async (params: SearchParams, requesterId: string) => {
-    if (params.type === "tv series") {
-      return this.searchSeries(params.q, requesterId)
+    if (params.type === "tv series" || params.type === "movie") {
+      return this.searchImdbTitles(params.q, requesterId, params.type)
     }
 
     return this.searchUsers(params.q)
   }
 
-  searchSeries = async (
+  searchImdbTitles = async (
     query: string,
-    requesterId: string
+    requesterId: string,
+    itemType: SyncroItemType
   ): Promise<Result[]> => {
-    const { results } = await this.imdbSearchRepository.searchImdbSeries(query)
+    const { results } = await this.imdbSearchRepository.searchImdbItems(
+      query,
+      itemType
+    )
 
     if (!results) return []
 

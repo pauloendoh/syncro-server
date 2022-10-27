@@ -92,7 +92,7 @@ export interface Result {
   imdbItem?: ImdbItem
 }
 
-export interface MovieResultResponseDto {
+export interface ImdbResultResponseDto {
   "@meta": Meta
   "@type": string
   query: string
