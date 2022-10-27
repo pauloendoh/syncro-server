@@ -17,8 +17,8 @@ export class UserController {
   @Get("/user/:userId/items")
   async findUserItems(
     @Param("userId") userId: string,
-    @CurrentUser({ required: true }) user: User
+    @CurrentUser({ required: true }) requester: User
   ) {
-    return this.userService.findUserItems(userId)
+    return this.userService.findUserItems(userId, requester.id)
   }
 }
