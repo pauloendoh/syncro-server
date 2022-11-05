@@ -1,9 +1,13 @@
 import { Interest } from "@prisma/client"
 import { ForbiddenError } from "routing-controllers"
+import { CustomPositionService } from "../custom-position/CustomPositionService"
 import { InterestRepository } from "./InterestRepository"
 
 export class InterestService {
-  constructor(private interestRepo = new InterestRepository()) {}
+  constructor(
+    private interestRepo = new InterestRepository(),
+    private customPositionService = new CustomPositionService()
+  ) {}
 
   async findInterestsByUserId(userId: string) {
     return this.interestRepo.findInterestsByUserId(userId)
@@ -20,7 +24,15 @@ export class InterestService {
       return null
 
     interest.userId = requesterId
-    return this.interestRepo.createInterest(interest)
+    const createdInterest = await this.interestRepo.createInterest(interest)
+
+    if (interest.imdbItemId)
+      this.customPositionService.checkOrCreateAtLastPosition(
+        interest.imdbItemId,
+        requesterId
+      )
+
+    return createdInterest
   }
 
   async updateInterest(interest: Interest, requesterId: string) {
@@ -33,6 +45,13 @@ export class InterestService {
 
     if (interest.interestLevel === null && interest.interestLevel === null) {
       await this.interestRepo.deleteInterest(interest.id)
+
+      if (interest.imdbItemId)
+        await this.customPositionService.checkAndHandleDelete(
+          interest.imdbItemId,
+          requesterId
+        )
+
       return null
     }
 

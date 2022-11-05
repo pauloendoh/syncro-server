@@ -1,13 +1,13 @@
 import { User } from "@prisma/client"
 import { CurrentUser, Get, JsonController } from "routing-controllers"
-import { UserSimilarityService } from "../user-similarity/UserSimilarityService"
+import { useFindSimilarUsers } from "../user-similarity/useCases/useFindSimilarUsers"
 
 @JsonController()
 export class UserController {
-  constructor(private userSimilarityService = new UserSimilarityService()) {}
+  constructor(private findSimilarUsers = new useFindSimilarUsers()) {}
 
   @Get("/me/similar-users")
   async findMySimilarUsers(@CurrentUser({ required: true }) user: User) {
-    return this.userSimilarityService.findSimilarUsers(user.id)
+    return this.findSimilarUsers.exec(user.id)
   }
 }

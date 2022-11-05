@@ -28,7 +28,8 @@ model User {
   follows    Follow[] @relation("following_users")
   followedBy Follow[] @relation("followers")
 
-  profile Profile?
+  profile         Profile?
+  customPositions CustomPosition[]
 }
 
 enum ImdbItemType {
@@ -47,6 +48,8 @@ model ImdbItem {
   plotSummary String       @default("")
   ratings     Rating[]
   interests   Interest[]
+
+  customPositions CustomPosition[]
 }
 
 model Rating {
@@ -98,4 +101,18 @@ model Profile {
   bio        String    @default("")
   websiteUrl String    @default("")
   updatedAt  DateTime? @updatedAt
+}
+
+model CustomPosition {
+  id         String    @id @default(cuid())
+  imdbItem   ImdbItem? @relation(fields: [imdbItemId], references: [id], onDelete: Cascade)
+  imdbItemId String?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  position Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

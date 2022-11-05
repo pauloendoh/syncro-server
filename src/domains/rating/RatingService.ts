@@ -1,9 +1,13 @@
 import { Rating } from "@prisma/client"
 import { ForbiddenError } from "routing-controllers"
+import { CustomPositionService } from "../custom-position/CustomPositionService"
 import { RatingRepository } from "./RatingRepository"
 
 export class RatingService {
-  constructor(private ratingRepo = new RatingRepository()) {}
+  constructor(
+    private ratingRepo = new RatingRepository(),
+    private customPositionService = new CustomPositionService()
+  ) {}
 
   async findRatingsByUserId(userId: string) {
     return this.ratingRepo.findRatingsByUserId(userId)
@@ -19,7 +23,15 @@ export class RatingService {
     if (rating.ratingValue === null) return null
 
     rating.userId = requesterId
-    return this.ratingRepo.createRating(rating)
+    const createdRating = await this.ratingRepo.createRating(rating)
+
+    if (rating.imdbItemId)
+      this.customPositionService.checkOrCreateAtLastPosition(
+        rating.imdbItemId,
+        requesterId
+      )
+
+    return createdRating
   }
 
   async updateRating(rating: Rating, requesterId: string) {
@@ -31,6 +43,12 @@ export class RatingService {
 
     if (rating.ratingValue === null) {
       await this.ratingRepo.deleteRating(rating.id)
+
+      if (rating.imdbItemId)
+        await this.customPositionService.checkAndHandleDelete(
+          rating.imdbItemId,
+          requesterId
+        )
       return null
     }
 
