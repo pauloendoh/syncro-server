@@ -53,7 +53,7 @@ export class CustomPositionRepository {
         },
       },
       orderBy: {
-        position: "desc",
+        position: "asc",
       },
     })
   }
