@@ -105,8 +105,15 @@ export class AuthService {
         { userId: user.id },
         String(process.env.JWT_SECRET),
         { expiresIn: ONE_MONTH_IN_SECONDS },
-        (err, token) => {
+        async (err, token) => {
           if (err) return rej(err)
+
+          await myPrismaClient.profile.create({
+            data: {
+              userId: user.id,
+            },
+          })
+
           return res(new AuthUserGetDto(user, String(token), expireDate))
         }
       )
