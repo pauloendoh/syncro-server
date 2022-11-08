@@ -1,5 +1,6 @@
 import { User } from "@prisma/client"
 import { compare, genSalt, hash } from "bcrypt"
+import cuid from "cuid"
 import { config } from "dotenv"
 import { sign } from "jsonwebtoken"
 import { BadRequestError, NotFoundError } from "routing-controllers"
@@ -83,5 +84,33 @@ export class AuthService {
       expiresIn: ONE_YEAR_IN_SECONDS,
     })
     return { token, expiresAt }
+  }
+
+  getTempUser = async () => {
+    const username = cuid()
+    const expireDate = new Date(new Date().setDate(new Date().getDate() + 1))
+
+    const user = await this.authRepo.createUser({
+      username: username,
+      email: username + "@" + username + ".com",
+      password: username,
+      expiresAt: expireDate.toISOString(),
+    })
+
+    // Signing in and returning  user's token
+    const ONE_MONTH_IN_SECONDS = 3600 * 24 * 30
+
+    const authUser = await new Promise<AuthUserGetDto>((res, rej) => {
+      sign(
+        { userId: user.id },
+        String(process.env.JWT_SECRET),
+        { expiresIn: ONE_MONTH_IN_SECONDS },
+        (err, token) => {
+          if (err) return rej(err)
+          return res(new AuthUserGetDto(user, String(token), expireDate))
+        }
+      )
+    })
+    return authUser
   }
 }
