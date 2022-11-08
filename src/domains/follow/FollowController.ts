@@ -40,4 +40,9 @@ export class FollowController {
   ) {
     return this.followService.findFollowingUsers(userId)
   }
+
+  @Get("/follow/most-followed-users")
+  async mostFollowedUsers() {
+    return this.followService.findMostFollowedUsers()
+  }
 }

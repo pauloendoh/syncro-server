@@ -35,6 +35,19 @@ export class UserRepository {
     })
   }
 
+  findByUserIds(userIds: string[]) {
+    return this.prismaClient.$transaction(
+      userIds.map((userId) =>
+        this.prismaClient.user.findFirst({
+          where: {
+            id: userId,
+          },
+          select: userSelectFields,
+        })
+      )
+    )
+  }
+
   findUserInfoByUserId(userId: string) {
     return this.prismaClient.user.findFirst({
       where: {

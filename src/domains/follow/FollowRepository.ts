@@ -61,4 +61,18 @@ export class FollowRepository {
       },
     })
   }
+
+  async findMostFollowedUsers() {
+    return this.prismaClient.follow.groupBy({
+      by: ["followingUserId"],
+      _count: {
+        followingUserId: true,
+      },
+      orderBy: {
+        _count: {
+          followingUserId: "desc",
+        },
+      },
+    })
+  }
 }

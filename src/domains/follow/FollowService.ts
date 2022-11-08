@@ -1,7 +1,11 @@
+import { UserRepository } from "../user/UserRepository"
 import { FollowRepository } from "./FollowRepository"
 
 export class FollowService {
-  constructor(private followRepo = new FollowRepository()) {}
+  constructor(
+    private followRepo = new FollowRepository(),
+    private userRepo = new UserRepository()
+  ) {}
 
   async toggleFollow(requesterId: string, followingUserId: string) {
     const alreadyFollowing = await this.followRepo.userAIsFollowingUserB(
@@ -23,5 +27,12 @@ export class FollowService {
 
   async findFollowers(userId: string) {
     return this.followRepo.findFollowers(userId)
+  }
+
+  async findMostFollowedUsers() {
+    const groupBy = await this.followRepo.findMostFollowedUsers()
+    const userIds = groupBy.map((g) => g.followingUserId)
+
+    return this.userRepo.findByUserIds(userIds)
   }
 }
