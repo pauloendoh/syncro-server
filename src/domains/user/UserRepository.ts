@@ -4,6 +4,25 @@ import { userSelectFields } from "../../utils/prisma/fields/user/userSelectField
 export class UserRepository {
   constructor(private prismaClient = myPrismaClient) {}
 
+  findUserById(userId: string) {
+    return this.prismaClient.user.findFirst({
+      where: {
+        id: userId,
+      },
+    })
+  }
+
+  updateUsername(newUsername: string, userId: string) {
+    return this.prismaClient.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        username: newUsername,
+      },
+    })
+  }
+
   searchUsersByUsername(query: string) {
     return this.prismaClient.user.findMany({
       select: userSelectFields,
@@ -57,6 +76,14 @@ export class UserRepository {
             userId,
           },
         },
+      },
+    })
+  }
+
+  findUserByUsername(username: string) {
+    return this.prismaClient.user.findFirst({
+      where: {
+        username,
       },
     })
   }
