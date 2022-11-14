@@ -1,10 +1,12 @@
+import { NotificationService } from "../notification/NotificationService"
 import { UserRepository } from "../user/UserRepository"
 import { FollowRepository } from "./FollowRepository"
 
 export class FollowService {
   constructor(
     private followRepo = new FollowRepository(),
-    private userRepo = new UserRepository()
+    private userRepo = new UserRepository(),
+    private notificationService = new NotificationService()
   ) {}
 
   async toggleFollow(requesterId: string, followingUserId: string) {
@@ -13,8 +15,14 @@ export class FollowService {
       followingUserId
     )
 
-    if (!alreadyFollowing)
-      return this.followRepo.followUser(requesterId, followingUserId)
+    if (!alreadyFollowing) {
+      const follow = await this.followRepo.followUser(
+        requesterId,
+        followingUserId
+      )
+      this.notificationService.createFollowNotification(follow)
+      return follow
+    }
 
     await this.followRepo.unfollow(alreadyFollowing.id)
 

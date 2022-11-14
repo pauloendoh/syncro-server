@@ -31,6 +31,7 @@ model User {
 
   profile         Profile?
   customPositions CustomPosition[]
+  notifications   Notification[]
 }
 
 enum ImdbItemType {
@@ -91,6 +92,8 @@ model Follow {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  notification Notification?
 }
 
 model Profile {
@@ -116,4 +119,18 @@ model CustomPosition {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  showDot Boolean @default(true)
+
+  follow   Follow? @relation(fields: [followId], references: [id], onDelete: Cascade)
+  followId String? @unique
 }
