@@ -100,4 +100,27 @@ export class UserRepository {
       },
     })
   }
+
+  async usersSavedItemId(userIds: string[], itemId: string) {
+    return this.prismaClient.user.findMany({
+      where: {
+        id: {
+          in: userIds,
+        },
+      },
+      select: {
+        ...userSelectFields,
+        interests: {
+          where: {
+            imdbItemId: itemId,
+          },
+        },
+        ratings: {
+          where: {
+            imdbItemId: itemId,
+          },
+        },
+      },
+    })
+  }
 }

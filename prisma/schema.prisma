@@ -29,9 +29,10 @@ model User {
   follows    Follow[] @relation("following_users")
   followedBy Follow[] @relation("followers")
 
-  profile         Profile?
-  customPositions CustomPosition[]
-  notifications   Notification[]
+  profile          Profile?
+  customPositions  CustomPosition[]
+  notifications    Notification[]
+  recommendedItems ItemRecommendation[]
 }
 
 enum ImdbItemType {
@@ -52,6 +53,8 @@ model ImdbItem {
   interests   Interest[]
 
   customPositions CustomPosition[]
+
+  itemRecommendations ItemRecommendation[]
 }
 
 model Rating {
@@ -121,6 +124,20 @@ model CustomPosition {
   updatedAt DateTime @updatedAt
 }
 
+model ItemRecommendation {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  item   ImdbItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  notification Notification?
+}
+
 model Notification {
   id     String @id @default(cuid())
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -133,4 +150,7 @@ model Notification {
 
   follow   Follow? @relation(fields: [followId], references: [id], onDelete: Cascade)
   followId String? @unique
+
+  itemRecommendation   ItemRecommendation? @relation(fields: [itemRecommendationId], references: [id], onDelete: Cascade)
+  itemRecommendationId String?             @unique
 }

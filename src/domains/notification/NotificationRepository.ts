@@ -18,6 +18,14 @@ export class NotificationRepository {
             },
           },
         },
+        itemRecommendation: {
+          include: {
+            item: true,
+            user: {
+              select: userSelectFields,
+            },
+          },
+        },
       },
     })
   }
@@ -38,6 +46,28 @@ export class NotificationRepository {
       },
       where: {
         userId,
+      },
+    })
+  }
+
+  async createItemRecommendationNotification(options: {
+    requesterId: string
+    itemId: string
+    userId: string
+  }) {
+    const itemRecommendation = await this.prismaClient.itemRecommendation.create(
+      {
+        data: {
+          userId: options.requesterId,
+          itemId: options.itemId,
+        },
+      }
+    )
+
+    return this.prismaClient.notification.create({
+      data: {
+        userId: options.userId,
+        itemRecommendationId: itemRecommendation.id,
       },
     })
   }
