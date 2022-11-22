@@ -19,4 +19,12 @@ export class SearchController {
   ) {
     return this.searchService.overallSearch(searchParams, user.id)
   }
+
+  @Get("/google")
+  async googleSearch(
+    // @CurrentUser({ required: true }) user: User,
+    @QueryParams({ required: true }) searchParams: SearchParams
+  ) {
+    return this.searchService.googleSearch(searchParams)
+  }
 }

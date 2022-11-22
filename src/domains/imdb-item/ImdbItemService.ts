@@ -15,6 +15,9 @@ export class ImdbItemService {
 
     const result = await this.imdbSearchRepository.fetchImdbItemDetails(tconst)
 
+    if (result.title.titleType === "tvMiniSeries")
+      result.title.titleType = "tvSeries"
+
     return this.imdbItemRepository.createFromImdbSearch(imdbId, result)
   }
 

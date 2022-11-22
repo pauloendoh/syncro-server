@@ -1,6 +1,8 @@
+import { google } from "googleapis"
 import { ImdbItemRepository } from "../imdb-item/ImdbItemRepository"
+import { ImdbItemService } from "../imdb-item/ImdbItemService"
 import { ImdbSearchRepository } from "../imdb-search/ImdbSearchRepository"
-import { Result } from "../imdb-search/types/ImdbResultResponseDto"
+import { ImdbRapidApiItem } from "../imdb-search/types/ImdbResultResponseDto"
 import { InterestRepository } from "../interest/InterestRepository"
 import { RatingRepository } from "../rating/RatingRepository"
 import { UserRepository } from "../user/UserRepository"
@@ -13,7 +15,8 @@ export class SearchService {
     private imdbItemRepository = new ImdbItemRepository(),
     private ratingRepo = new RatingRepository(),
     private interestRepo = new InterestRepository(),
-    private userRepo = new UserRepository()
+    private userRepo = new UserRepository(),
+    private imdbItemService = new ImdbItemService()
   ) {}
 
   overallSearch = async (params: SearchParams, requesterId: string) => {
@@ -28,7 +31,7 @@ export class SearchService {
     query: string,
     requesterId: string,
     itemType: SyncroItemType
-  ): Promise<Result[]> => {
+  ): Promise<ImdbRapidApiItem[]> => {
     const { results } = await this.imdbSearchRepository.searchImdbItems(
       query,
       itemType
@@ -59,5 +62,47 @@ export class SearchService {
 
   searchUsers = async (query: string) => {
     return this.userRepo.searchUsersByUsername(query)
+  }
+
+  async googleSearch(params: SearchParams) {
+    const customSearch = google.customsearch("v1")
+
+    const query = this.getGoogleQuery(params)
+
+    const response = await customSearch.cse.list({
+      auth: process.env.GOOGLE_SEARCH_API_KEY,
+      q: query,
+      cx: "d4e78f2a07f64473d",
+      num: 5,
+    })
+
+    // SDLKJFALÇSKJA --- parei aqui
+    if (response.data.items?.[0]) return response.data.items[0]
+
+    const links = response.data.items?.map((i) => i.link) || []
+
+    const ids =
+      response.data.items?.map(
+        (i) => i.pagemap?.metatags?.[0]?.["imdb:pageconst"]
+      ) || []
+    const uniqueIds = ids.reduce<string[]>((resultIds, currentId) => {
+      if (currentId && !resultIds.includes(currentId))
+        return [...resultIds, currentId]
+      return resultIds
+    }, [])
+
+    if (uniqueIds.length === 0) return null
+
+    const result = this.imdbItemService.findAndSaveDetails(
+      `/title/${uniqueIds[0]}/`
+    )
+    return result
+  }
+
+  getGoogleQuery(params: SearchParams) {
+    if (params.type === "tv series") return `${params.q} game metacritic`
+    if (params.type === "movie") return `${params.q} imdb movie`
+
+    return params.q
   }
 }

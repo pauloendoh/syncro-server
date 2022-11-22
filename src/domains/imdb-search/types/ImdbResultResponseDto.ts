@@ -68,7 +68,7 @@ export interface KnownFor {
   year: number
 }
 
-export interface Result {
+export interface ImdbRapidApiItem {
   id: string
   image: Image
   runningTimeInMinutes: number
@@ -96,6 +96,6 @@ export interface ImdbResultResponseDto {
   "@meta": Meta
   "@type": string
   query: string
-  results: Result[]
+  results: ImdbRapidApiItem[]
   types: string[]
 }

@@ -38,6 +38,7 @@ export class ImdbSearchRepository {
     return result
   }
 
+  // PE 1/3 - should be cached
   async fetchImdbItemDetails(imdbId: string): Promise<ImdbItemDetailsResponse> {
     const result = await this.imdbAxios
       .get<ImdbItemDetailsResponse>(urls.imdbTitleDetails, {
