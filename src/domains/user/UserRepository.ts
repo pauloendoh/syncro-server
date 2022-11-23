@@ -1,3 +1,4 @@
+import { User } from "@prisma/client"
 import myPrismaClient from "../../utils/myPrismaClient"
 import { userSelectFields } from "../../utils/prisma/fields/user/userSelectFields"
 
@@ -32,6 +33,12 @@ export class UserRepository {
           mode: "insensitive",
         },
       },
+    })
+  }
+
+  findUserByEmail(email: string) {
+    return this.prismaClient.user.findFirst({
+      where: { email },
     })
   }
 
@@ -120,6 +127,17 @@ export class UserRepository {
             imdbItemId: itemId,
           },
         },
+      },
+    })
+  }
+
+  updateUser(user: User) {
+    return this.prismaClient.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        ...user,
       },
     })
   }

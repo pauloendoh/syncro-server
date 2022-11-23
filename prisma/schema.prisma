@@ -33,6 +33,7 @@ model User {
   customPositions  CustomPosition[]
   notifications    Notification[]
   recommendedItems ItemRecommendation[]
+  userTokens       UserToken[]
 }
 
 enum ImdbItemType {
@@ -153,4 +154,22 @@ model Notification {
 
   itemRecommendation   ItemRecommendation? @relation(fields: [itemRecommendationId], references: [id], onDelete: Cascade)
   itemRecommendationId String?             @unique
+}
+
+enum TokenType {
+  PASSWORD_RESET_CODE
+}
+
+model UserToken {
+  type   TokenType
+  id     String    @id @default(cuid())
+  user   User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  token String @default(cuid())
+
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

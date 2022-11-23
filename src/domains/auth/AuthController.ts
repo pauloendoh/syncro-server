@@ -7,13 +7,18 @@ import {
   JsonController,
   Post,
 } from "routing-controllers"
+import { EmailService } from "../email/EmailService"
 import { AuthService } from "./AuthService"
 import { LoginDto } from "./types/LoginDto"
+import { PasswordResetPostDto } from "./types/PasswordResetPostDto"
 import { RegisterDto } from "./types/RegisterDto"
 
 @JsonController("/auth")
 export class AuthController {
-  constructor(private authService = new AuthService()) {}
+  constructor(
+    private authService = new AuthService(),
+    private emailService = new EmailService()
+  ) {}
 
   @Post("/register")
   async register(@Body() dto: RegisterDto) {
@@ -36,5 +41,22 @@ export class AuthController {
   @Get("/temp-user")
   async getTempUser() {
     return this.authService.getTempUser()
+  }
+
+  @Post("/password-reset-email")
+  sendPasswordResetEmail(@Body({ required: true }) body: { email: string }) {
+    return this.emailService.sendPasswordResetEmail(body.email)
+  }
+
+  @Post("/confirm-password-reset-code")
+  confirmPasswordResetCode(
+    @Body({ required: true }) body: { email: string; code: string }
+  ) {
+    return this.authService.confirmPasswordResetCode(body.email, body.code)
+  }
+
+  @Post("/end-password-reset")
+  endResetPassword(@Body({ required: true }) body: PasswordResetPostDto) {
+    return this.authService.endResetPassword(body)
   }
 }

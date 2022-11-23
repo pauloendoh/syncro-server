@@ -5,15 +5,22 @@ import { config } from "dotenv"
 import { sign } from "jsonwebtoken"
 import { BadRequestError, NotFoundError } from "routing-controllers"
 import myPrismaClient from "../../utils/myPrismaClient"
+import { UserTokenRepository } from "../user-token/UserTokenRepository"
+import { UserRepository } from "../user/UserRepository"
 import { AuthRepository } from "./AuthRepository"
 import { AuthUserGetDto } from "./types/AuthUserGetDto"
 import { LoginDto } from "./types/LoginDto"
+import { PasswordResetPostDto } from "./types/PasswordResetPostDto"
 import { RegisterDto } from "./types/RegisterDto"
 
 config()
 
 export class AuthService {
-  constructor(private authRepo = new AuthRepository()) {}
+  constructor(
+    private authRepo = new AuthRepository(),
+    private userRepo = new UserRepository(),
+    private tokenRepo = new UserTokenRepository()
+  ) {}
 
   async register(dto: RegisterDto) {
     dto.username = dto.username.trim()
@@ -119,5 +126,43 @@ export class AuthService {
       )
     })
     return authUser
+  }
+
+  async confirmPasswordResetCode(email: string, code: string) {
+    email = email.trim()
+    code = code.trim()
+
+    const user = await this.userRepo.findUserByEmail(email)
+    if (!user) throw new NotFoundError("User not found.")
+
+    const token = await this.tokenRepo.passwordResetCodeExists(user.id, code)
+    if (!token) throw new NotFoundError("Invalid code!")
+
+    return true
+  }
+
+  public async endResetPassword(dto: PasswordResetPostDto) {
+    dto.email = dto.email.trim()
+    dto.code = dto.code.trim()
+
+    // Token exists?
+    const tokenExists = await this.confirmPasswordResetCode(dto.email, dto.code)
+
+    if (!tokenExists)
+      throw new NotFoundError("Token does not exist or it is expired")
+
+    // se existe, faz a alteração de senha
+    if (tokenExists) {
+      const user = await this.userRepo.findUserByEmail(dto.email)
+      if (!user) throw new NotFoundError("User not found!")
+
+      const salt = await genSalt(10)
+      user.password = await hash(dto.password, salt)
+
+      await this.userRepo.updateUser(user)
+      await this.tokenRepo.deleteAllPasswordResetTokens(user.id)
+
+      return true
+    }
   }
 }
