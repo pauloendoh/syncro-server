@@ -77,8 +77,8 @@ export class AuthService {
     const { token, expiresAt } = this.getSignInToken(user)
 
     if (pushToken && pushToken !== "null") {
-      const pToken = await this.tokenRepo.createPushToken(user.id, pushToken)
-      console.log({ pToken })
+      // don't remove this await
+      await this.tokenRepo.createPushToken(user.id, pushToken)
     }
 
     return new AuthUserGetDto(user, token, expiresAt)

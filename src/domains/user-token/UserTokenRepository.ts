@@ -57,4 +57,13 @@ export class UserTokenRepository {
       },
     })
   }
+
+  findUserNotificationTokens(userId: string) {
+    return this.prismaClient.userToken.findMany({
+      where: {
+        userId,
+        type: "PUSH_TOKEN",
+      },
+    })
+  }
 }
