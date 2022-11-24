@@ -6,6 +6,7 @@ import {
   Get,
   JsonController,
   Post,
+  QueryParam,
 } from "routing-controllers"
 import { EmailService } from "../email/EmailService"
 import { AuthService } from "./AuthService"
@@ -29,8 +30,11 @@ export class AuthController {
   }
 
   @Post("/login")
-  async login(@Body() dto: LoginDto) {
-    return this.authService.login(dto)
+  async login(
+    @Body() dto: LoginDto,
+    @QueryParam("pushToken") pushToken: string
+  ) {
+    return this.authService.login(dto, pushToken)
   }
 
   @Get("/me")

@@ -37,4 +37,24 @@ export class UserTokenRepository {
       },
     })
   }
+
+  createPushToken(userId: string, pushToken: string) {
+    return this.prismaClient.userToken.create({
+      data: {
+        userId,
+        token: pushToken,
+        type: "PUSH_TOKEN",
+      },
+    })
+  }
+
+  deletePushToken(userId: string, pushToken: string) {
+    return this.prismaClient.userToken.deleteMany({
+      where: {
+        userId,
+        type: "PUSH_TOKEN",
+        token: pushToken,
+      },
+    })
+  }
 }

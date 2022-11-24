@@ -65,7 +65,7 @@ export class AuthService {
     return new AuthUserGetDto(createdUser, token, expiresAt)
   }
 
-  public async login(payload: LoginDto) {
+  public async login(payload: LoginDto, pushToken: string | null) {
     const user = await this.authRepo.findUserByUsernameEmail(
       (payload.identificator = payload.identificator.trim())
     )
@@ -75,6 +75,12 @@ export class AuthService {
     if (!passwordOk) throw new BadRequestError("Password not correct")
 
     const { token, expiresAt } = this.getSignInToken(user)
+
+    if (pushToken && pushToken !== "null") {
+      const pToken = await this.tokenRepo.createPushToken(user.id, pushToken)
+      console.log({ pToken })
+    }
+
     return new AuthUserGetDto(user, token, expiresAt)
   }
 
