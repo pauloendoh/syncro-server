@@ -6,6 +6,6 @@ export class UseLogoutPushToken {
   constructor(private tokenRepo = new UserTokenRepository()) {}
 
   exec = async ({ requesterId, pushToken }: ExecParams) => {
-    return this.tokenRepo.deletePushToken(requesterId, pushToken)
+    return this.tokenRepo.deletePushToken(pushToken)
   }
 }

@@ -77,6 +77,7 @@ export class AuthService {
     const { token, expiresAt } = this.getSignInToken(user)
 
     if (pushToken && pushToken !== "null") {
+      await this.tokenRepo.deletePushToken(pushToken)
       // don't remove this await
       await this.tokenRepo.createPushToken(user.id, pushToken)
     }

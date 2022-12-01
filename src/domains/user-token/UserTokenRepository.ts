@@ -48,10 +48,9 @@ export class UserTokenRepository {
     })
   }
 
-  deletePushToken(userId: string, pushToken: string) {
+  deletePushToken(pushToken: string) {
     return this.prismaClient.userToken.deleteMany({
       where: {
-        userId,
         type: "PUSH_TOKEN",
         token: pushToken,
       },
