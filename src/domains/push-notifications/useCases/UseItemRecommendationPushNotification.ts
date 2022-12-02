@@ -18,7 +18,7 @@ export class UseItemRecommendationPushNotification {
   exec = async ({ requesterId, itemId, userId }: ExecParams) => {
     const requester = await this.userRepo.findUserById(requesterId)
     const pushTokens = await this.tokenRepo.findUserNotificationTokens(userId)
-    const item = await this.itemRepo.findImdbItemById(itemId)
+    const item = await this.itemRepo.findSyncroItemById(itemId)
     if (!requester || !item)
       throw new NotFoundError404("Requester or item not found.")
 

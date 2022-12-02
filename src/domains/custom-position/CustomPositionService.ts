@@ -11,19 +11,19 @@ export class CustomPositionService {
   ) {}
 
   async checkOrCreateAtLastPosition(itemId: string, requesterId: string) {
-    const imdbItem = await this.itemRepo.findImdbItemById(itemId)
+    const syncroItem = await this.itemRepo.findSyncroItemById(itemId)
 
-    if (!imdbItem) throw new NotFoundError("Item not found.")
+    if (!syncroItem) throw new NotFoundError("Item not found.")
 
     const alreadyExists = await this.customPositionRepo.findCustomPositionByItemId(
-      imdbItem.id,
+      syncroItem.id,
       requesterId
     )
     if (alreadyExists) return alreadyExists
 
     const nextPosition = await this.customPositionRepo.findNextAvailablePosition(
       requesterId,
-      imdbItem.type
+      syncroItem.type
     )
 
     return await this.customPositionRepo.createCustomPosition(

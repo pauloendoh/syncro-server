@@ -7,7 +7,7 @@ export class SyncroItemService {
     private itemRepo = new SyncroItemRepository()
   ) {}
   async findAndSaveDetails(imdbId: string) {
-    const found = await this.itemRepo.findImdbItemById(imdbId)
+    const found = await this.itemRepo.findSyncroItemById(imdbId)
     if (found) return found
 
     const splits = imdbId.trim().split("/")

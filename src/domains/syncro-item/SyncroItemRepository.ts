@@ -5,7 +5,7 @@ import { ImdbItemDetailsResponse } from "./types/ImdbItemDetailsGetDto"
 export class SyncroItemRepository {
   constructor(private prismaClient = myPrismaClient) {}
 
-  findImdbItemById(id: string) {
+  findSyncroItemById(id: string) {
     return this.prismaClient.syncroItem.findFirst({
       where: {
         id,

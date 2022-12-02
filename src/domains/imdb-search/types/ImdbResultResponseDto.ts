@@ -1,4 +1,4 @@
-import { ImdbItem, Interest, Rating } from "@prisma/client"
+import { Interest, Rating, SyncroItem } from "@prisma/client"
 
 export interface Meta {
   operation: string
@@ -89,7 +89,7 @@ export interface ImdbRapidApiItem {
   knownFor: KnownFor[]
   myRating?: Rating
   myInterest?: Interest
-  imdbItem?: ImdbItem
+  syncroItem?: SyncroItem
 }
 
 export interface ImdbResultResponseDto {
