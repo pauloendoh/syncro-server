@@ -39,8 +39,6 @@ model User {
 enum SyncroItemType {
   tvSeries
   movie
-
-  @@map("ImdbItemType")
 }
 
 model SyncroItem {
@@ -58,14 +56,12 @@ model SyncroItem {
   customPositions CustomPosition[]
 
   itemRecommendations ItemRecommendation[]
-
-  @@map("ImdbItem")
 }
 
 model Rating {
   id           String      @id @default(cuid())
   syncroItem   SyncroItem? @relation(fields: [syncroItemId], references: [id])
-  syncroItemId String?     @map("imdbItemId")
+  syncroItemId String?
 
   user        User   @relation(fields: [userId], references: [id])
   userId      String
@@ -78,7 +74,7 @@ model Rating {
 model Interest {
   id           String      @id @default(cuid())
   syncroItem   SyncroItem? @relation(fields: [syncroItemId], references: [id], onDelete: Cascade)
-  syncroItemId String?     @map("imdbItemId")
+  syncroItemId String?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
@@ -118,7 +114,7 @@ model Profile {
 model CustomPosition {
   id           String      @id @default(cuid())
   syncroItem   SyncroItem? @relation(fields: [syncroItemId], references: [id], onDelete: Cascade)
-  syncroItemId String?     @map("imdbItemId")
+  syncroItemId String?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
