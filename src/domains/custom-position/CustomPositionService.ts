@@ -1,12 +1,12 @@
 import { CustomPosition } from "@prisma/client"
 import { NotFoundError } from "routing-controllers"
-import { ImdbItemRepository } from "../imdb-item/ImdbItemRepository"
 import { SyncroItemType } from "../search/types/SyncroItemType"
+import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
 import { CustomPositionRepository } from "./CustomPositionRepository"
 
 export class CustomPositionService {
   constructor(
-    private itemRepo = new ImdbItemRepository(),
+    private itemRepo = new SyncroItemRepository(),
     private customPositionRepo = new CustomPositionRepository()
   ) {}
 
@@ -50,7 +50,7 @@ export class CustomPositionService {
 
     if (!savedCustomPosition)
       savedCustomPosition = await this.checkOrCreateAtLastPosition(
-        sent.imdbItemId!,
+        sent.syncroItemId!,
         requesterId
       )
 

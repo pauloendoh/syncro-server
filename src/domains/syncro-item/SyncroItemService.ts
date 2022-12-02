@@ -1,13 +1,13 @@
 import { ImdbSearchRepository } from "../imdb-search/ImdbSearchRepository"
-import { ImdbItemRepository } from "./ImdbItemRepository"
+import { SyncroItemRepository } from "./SyncroItemRepository"
 
-export class ImdbItemService {
+export class SyncroItemService {
   constructor(
     private imdbSearchRepository = new ImdbSearchRepository(),
-    private imdbItemRepository = new ImdbItemRepository()
+    private itemRepo = new SyncroItemRepository()
   ) {}
   async findAndSaveDetails(imdbId: string) {
-    const found = await this.imdbItemRepository.findImdbItemById(imdbId)
+    const found = await this.itemRepo.findImdbItemById(imdbId)
     if (found) return found
 
     const splits = imdbId.trim().split("/")
@@ -18,10 +18,10 @@ export class ImdbItemService {
     if (result.title.titleType === "tvMiniSeries")
       result.title.titleType = "tvSeries"
 
-    return this.imdbItemRepository.createFromImdbSearch(imdbId, result)
+    return this.itemRepo.createFromImdbSearch(imdbId, result)
   }
 
   async findImdbItemsRatedByUserId(userId: string) {
-    return this.imdbItemRepository.findImdbItemsRatedByUserId(userId)
+    return this.itemRepo.findImdbItemsRatedByUserId(userId)
   }
 }

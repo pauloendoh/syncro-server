@@ -1,4 +1,4 @@
-import { CustomPosition, ImdbItemType } from "@prisma/client"
+import { CustomPosition, SyncroItemType } from "@prisma/client"
 import myPrismaClient from "../../utils/myPrismaClient"
 
 export class CustomPositionRepository {
@@ -8,16 +8,19 @@ export class CustomPositionRepository {
     return this.prismaClient.customPosition.findFirst({
       where: {
         userId: requesterId,
-        imdbItemId: itemId,
+        syncroItemId: itemId,
       },
     })
   }
 
-  async findNextAvailablePosition(requesterId: string, itemType: ImdbItemType) {
+  async findNextAvailablePosition(
+    requesterId: string,
+    itemType: SyncroItemType
+  ) {
     const customPosition = await this.prismaClient.customPosition.findFirst({
       where: {
         userId: requesterId,
-        imdbItem: {
+        syncroItem: {
           type: itemType,
         },
       },
@@ -34,7 +37,7 @@ export class CustomPositionRepository {
   createCustomPosition(itemId: string, requesterId: string, position: number) {
     return this.prismaClient.customPosition.create({
       data: {
-        imdbItemId: itemId,
+        syncroItemId: itemId,
         userId: requesterId,
         position,
       },
@@ -43,13 +46,13 @@ export class CustomPositionRepository {
 
   async findCustomPositionsByItemType(
     requesterId: string,
-    imdbItemType: ImdbItemType
+    syncroItemType: SyncroItemType
   ) {
     return this.prismaClient.customPosition.findMany({
       where: {
         userId: requesterId,
-        imdbItem: {
-          type: imdbItemType,
+        syncroItem: {
+          type: syncroItemType,
         },
       },
       orderBy: {
@@ -72,7 +75,7 @@ export class CustomPositionRepository {
         id,
       },
       include: {
-        imdbItem: {
+        syncroItem: {
           select: {
             type: true,
           },
@@ -80,7 +83,7 @@ export class CustomPositionRepository {
       },
     })
 
-    return found?.imdbItem?.type || null
+    return found?.syncroItem?.type || null
   }
 
   async saveManyCustomPositions(customPositions: CustomPosition[]) {
@@ -98,14 +101,14 @@ export class CustomPositionRepository {
     const rating = await this.prismaClient.rating.findFirst({
       where: {
         userId: requesterId,
-        imdbItemId: itemId,
+        syncroItemId: itemId,
       },
     })
 
     const interest = await this.prismaClient.interest.findFirst({
       where: {
         userId: requesterId,
-        imdbItemId: itemId,
+        syncroItemId: itemId,
       },
     })
 
@@ -116,7 +119,7 @@ export class CustomPositionRepository {
     return this.prismaClient.customPosition.deleteMany({
       where: {
         userId: requesterId,
-        imdbItemId: itemId,
+        syncroItemId: itemId,
       },
     })
   }

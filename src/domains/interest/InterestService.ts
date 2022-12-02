@@ -26,9 +26,9 @@ export class InterestService {
     interest.userId = requesterId
     const createdInterest = await this.interestRepo.createInterest(interest)
 
-    if (interest.imdbItemId)
+    if (interest.syncroItemId)
       this.customPositionService.checkOrCreateAtLastPosition(
-        interest.imdbItemId,
+        interest.syncroItemId,
         requesterId
       )
 
@@ -46,9 +46,9 @@ export class InterestService {
     if (interest.interestLevel === null && interest.interestLevel === null) {
       await this.interestRepo.deleteInterest(interest.id)
 
-      if (interest.imdbItemId)
+      if (interest.syncroItemId)
         await this.customPositionService.checkAndHandleDelete(
-          interest.imdbItemId,
+          interest.syncroItemId,
           requesterId
         )
 

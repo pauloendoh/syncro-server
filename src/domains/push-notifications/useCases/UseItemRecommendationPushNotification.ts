@@ -2,7 +2,7 @@ import Expo, { ExpoPushMessage, ExpoPushTicket } from "expo-server-sdk"
 import { NotFoundError404 } from "../../../utils/errors/NotFoundError404"
 import { myExpo } from "../../../utils/myExpo"
 import { pushNotificationTitles } from "../../../utils/pushNotificationTitles"
-import { ImdbItemRepository } from "../../imdb-item/ImdbItemRepository"
+import { SyncroItemRepository } from "../../syncro-item/SyncroItemRepository"
 import { UserTokenRepository } from "../../user-token/UserTokenRepository"
 import { UserRepository } from "../../user/UserRepository"
 
@@ -12,7 +12,7 @@ export class UseItemRecommendationPushNotification {
   constructor(
     private userRepo = new UserRepository(),
     private tokenRepo = new UserTokenRepository(),
-    private itemRepo = new ImdbItemRepository()
+    private itemRepo = new SyncroItemRepository()
   ) {}
 
   exec = async ({ requesterId, itemId, userId }: ExecParams) => {

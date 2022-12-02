@@ -65,7 +65,7 @@ export class UserRepository {
   }
 
   findUserItems(userId: string) {
-    return this.prismaClient.imdbItem.findMany({
+    return this.prismaClient.syncroItem.findMany({
       where: {
         OR: [
           {
@@ -119,12 +119,12 @@ export class UserRepository {
         ...userSelectFields,
         interests: {
           where: {
-            imdbItemId: itemId,
+            syncroItemId: itemId,
           },
         },
         ratings: {
           where: {
-            imdbItemId: itemId,
+            syncroItemId: itemId,
           },
         },
       },

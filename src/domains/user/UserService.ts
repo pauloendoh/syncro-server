@@ -1,13 +1,7 @@
-import { InterestRepository } from "../interest/InterestRepository"
-import { RatingRepository } from "../rating/RatingRepository"
 import { UserRepository } from "./UserRepository"
 
 export class UserService {
-  constructor(
-    private userRepo = new UserRepository(),
-    private ratingRepo = new RatingRepository(),
-    private interestRepo = new InterestRepository()
-  ) {}
+  constructor(private userRepo = new UserRepository()) {}
 
   async findUserInfo(userId: string) {
     return this.userRepo.findUserInfoByUserId(userId)

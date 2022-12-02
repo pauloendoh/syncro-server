@@ -19,7 +19,7 @@ export class useGetUserSimilarity {
     const sumSimilarityPercentage = userBRatings.reduce(
       (resultSumPercentage, userBRating) => {
         const userARating = userARatings.find(
-          (r) => r.imdbItemId === userBRating.imdbItemId
+          (r) => r.syncroItemId === userBRating.syncroItemId
         )
 
         if (!userARating)

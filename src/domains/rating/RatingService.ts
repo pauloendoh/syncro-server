@@ -25,9 +25,9 @@ export class RatingService {
     rating.userId = requesterId
     const createdRating = await this.ratingRepo.createRating(rating)
 
-    if (rating.imdbItemId)
+    if (rating.syncroItemId)
       this.customPositionService.checkOrCreateAtLastPosition(
-        rating.imdbItemId,
+        rating.syncroItemId,
         requesterId
       )
 
@@ -44,9 +44,9 @@ export class RatingService {
     if (rating.ratingValue === null) {
       await this.ratingRepo.deleteRating(rating.id)
 
-      if (rating.imdbItemId)
+      if (rating.syncroItemId)
         await this.customPositionService.checkAndHandleDelete(
-          rating.imdbItemId,
+          rating.syncroItemId,
           requesterId
         )
       return null

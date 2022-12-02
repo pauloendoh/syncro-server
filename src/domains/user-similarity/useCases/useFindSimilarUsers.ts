@@ -18,12 +18,12 @@ export class useFindSimilarUsers {
       requesterId
     )
     const highInterestImdbIds = requesterHighInterests.map((i) =>
-      String(i.imdbItemId)
+      String(i.syncroItemId)
     )
 
     const imdbItemIds = requesterRatings
-      .filter((r) => typeof r.imdbItemId !== null)
-      .map((r) => String(r.imdbItemId))
+      .filter((r) => typeof r.syncroItemId !== null)
+      .map((r) => String(r.syncroItemId))
 
     const usersWhoRatedSameItems = await this.ratingRepo.findUsersWhoRatedSameItems(
       requesterId,

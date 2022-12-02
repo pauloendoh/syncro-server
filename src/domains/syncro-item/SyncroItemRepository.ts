@@ -1,12 +1,12 @@
-import { ImdbItemType } from "@prisma/client"
+import { SyncroItemType } from "@prisma/client"
 import myPrismaClient from "../../utils/myPrismaClient"
 import { ImdbItemDetailsResponse } from "./types/ImdbItemDetailsGetDto"
 
-export class ImdbItemRepository {
+export class SyncroItemRepository {
   constructor(private prismaClient = myPrismaClient) {}
 
   findImdbItemById(id: string) {
-    return this.prismaClient.imdbItem.findFirst({
+    return this.prismaClient.syncroItem.findFirst({
       where: {
         id,
       },
@@ -14,14 +14,14 @@ export class ImdbItemRepository {
   }
 
   createFromImdbSearch(id: string, data: ImdbItemDetailsResponse) {
-    return this.prismaClient.imdbItem.create({
+    return this.prismaClient.syncroItem.create({
       data: {
         id,
         avgRating: data.ratings?.rating || 0,
         imageUrl: data.title.image?.url,
         ratingCount: data.ratings?.ratingCount || 0,
         title: data.title.title,
-        type: data.title.titleType as ImdbItemType,
+        type: data.title.titleType as SyncroItemType,
         year: data.title.year,
         plotSummary: data.plotOutline?.text || data.plotSummary?.text,
       },
@@ -29,7 +29,7 @@ export class ImdbItemRepository {
   }
 
   findImdbItemsRatedByUserId(userId: string) {
-    return this.prismaClient.imdbItem.findMany({
+    return this.prismaClient.syncroItem.findMany({
       include: {
         ratings: true,
       },
@@ -44,7 +44,7 @@ export class ImdbItemRepository {
   }
 
   findImdbItemsByIds(imdbIds: string[]) {
-    return this.prismaClient.imdbItem.findMany({
+    return this.prismaClient.syncroItem.findMany({
       where: {
         id: {
           in: imdbIds,

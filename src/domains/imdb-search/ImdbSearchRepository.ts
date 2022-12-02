@@ -3,8 +3,8 @@ import myImdbAxios from "../../utils/myImdbAxios"
 import myRedis from "../../utils/redis/myRedisClient"
 import { redisKeys } from "../../utils/redis/redisKeys"
 import { urls } from "../../utils/urls"
-import { ImdbItemDetailsResponse } from "../imdb-item/types/ImdbItemDetailsGetDto"
 import { SyncroItemType } from "../search/types/SyncroItemType"
+import { ImdbItemDetailsResponse } from "../syncro-item/types/ImdbItemDetailsGetDto"
 import { ImdbResultResponseDto } from "./types/ImdbResultResponseDto"
 
 export class ImdbSearchRepository {

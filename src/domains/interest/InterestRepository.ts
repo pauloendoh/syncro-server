@@ -27,7 +27,7 @@ export class InterestRepository {
     return this.prismaClient.interest.findMany({
       where: {
         userId,
-        imdbItemId: {
+        syncroItemId: {
           in: itemsIds,
         },
       },
@@ -77,7 +77,7 @@ export class InterestRepository {
             userId: requesterId,
           },
           interestLevel: 3,
-          imdbItemId: {
+          syncroItemId: {
             in: imdbIds,
           },
         },

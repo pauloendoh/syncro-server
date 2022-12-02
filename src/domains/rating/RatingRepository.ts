@@ -30,7 +30,7 @@ export class RatingRepository {
     return this.prismaClient.rating.findMany({
       where: {
         userId,
-        imdbItemId: {
+        syncroItemId: {
           in: itemsIds,
         },
       },
@@ -80,7 +80,7 @@ export class RatingRepository {
         },
         ratings: {
           some: {
-            imdbItemId: {
+            syncroItemId: {
               in: requesterImdbItemIds,
             },
           },
@@ -91,7 +91,7 @@ export class RatingRepository {
         ...userSelectFields,
         ratings: {
           where: {
-            imdbItemId: {
+            syncroItemId: {
               in: requesterImdbItemIds,
             },
           },

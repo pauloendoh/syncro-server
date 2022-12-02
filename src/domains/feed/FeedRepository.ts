@@ -10,7 +10,7 @@ export class FeedRepository {
         user: {
           select: userSelectFields,
         },
-        imdbItem: true,
+        syncroItem: true,
       },
       where: {
         userId: {

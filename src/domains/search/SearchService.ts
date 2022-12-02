@@ -1,10 +1,10 @@
 import { google } from "googleapis"
-import { ImdbItemRepository } from "../imdb-item/ImdbItemRepository"
-import { ImdbItemService } from "../imdb-item/ImdbItemService"
 import { ImdbSearchRepository } from "../imdb-search/ImdbSearchRepository"
 import { ImdbRapidApiItem } from "../imdb-search/types/ImdbResultResponseDto"
 import { InterestRepository } from "../interest/InterestRepository"
 import { RatingRepository } from "../rating/RatingRepository"
+import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
+import { SyncroItemService } from "../syncro-item/SyncroItemService"
 import { UserRepository } from "../user/UserRepository"
 import { SearchParams } from "./types/SearchParams"
 import { SyncroItemType } from "./types/SyncroItemType"
@@ -12,11 +12,11 @@ import { SyncroItemType } from "./types/SyncroItemType"
 export class SearchService {
   constructor(
     private imdbSearchRepository = new ImdbSearchRepository(),
-    private imdbItemRepository = new ImdbItemRepository(),
+    private imdbItemRepository = new SyncroItemRepository(),
     private ratingRepo = new RatingRepository(),
     private interestRepo = new InterestRepository(),
     private userRepo = new UserRepository(),
-    private imdbItemService = new ImdbItemService()
+    private imdbItemService = new SyncroItemService()
   ) {}
 
   overallSearch = async (params: SearchParams, requesterId: string) => {
@@ -53,9 +53,9 @@ export class SearchService {
     return results.map((result) => ({
       ...result,
       imdbItem: imdbItems.find((item) => item.id === result.id),
-      myRating: myRatings.find((rating) => rating.imdbItemId === result.id),
+      myRating: myRatings.find((rating) => rating.syncroItemId === result.id),
       myInterest: myInterests.find(
-        (interest) => interest.imdbItemId === result.id
+        (interest) => interest.syncroItemId === result.id
       ),
     }))
   }

@@ -36,32 +36,36 @@ model User {
   userTokens       UserToken[]
 }
 
-enum ImdbItemType {
+enum SyncroItemType {
   tvSeries
   movie
+
+  @@map("ImdbItemType")
 }
 
-model ImdbItem {
-  id          String       @id
+model SyncroItem {
+  id          String         @id
   title       String
-  type        ImdbItemType
-  imageUrl    String       @default("")
+  type        SyncroItemType
+  imageUrl    String         @default("")
   year        Int?
   avgRating   Float
   ratingCount Int
-  plotSummary String       @default("")
+  plotSummary String         @default("")
   ratings     Rating[]
   interests   Interest[]
 
   customPositions CustomPosition[]
 
   itemRecommendations ItemRecommendation[]
+
+  @@map("ImdbItem")
 }
 
 model Rating {
-  id         String    @id @default(cuid())
-  imdbItem   ImdbItem? @relation(fields: [imdbItemId], references: [id])
-  imdbItemId String?
+  id           String      @id @default(cuid())
+  syncroItem   SyncroItem? @relation(fields: [syncroItemId], references: [id])
+  syncroItemId String?     @map("imdbItemId")
 
   user        User   @relation(fields: [userId], references: [id])
   userId      String
@@ -72,9 +76,9 @@ model Rating {
 }
 
 model Interest {
-  id         String    @id @default(cuid())
-  imdbItem   ImdbItem? @relation(fields: [imdbItemId], references: [id], onDelete: Cascade)
-  imdbItemId String?
+  id           String      @id @default(cuid())
+  syncroItem   SyncroItem? @relation(fields: [syncroItemId], references: [id], onDelete: Cascade)
+  syncroItemId String?     @map("imdbItemId")
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
@@ -112,9 +116,9 @@ model Profile {
 }
 
 model CustomPosition {
-  id         String    @id @default(cuid())
-  imdbItem   ImdbItem? @relation(fields: [imdbItemId], references: [id], onDelete: Cascade)
-  imdbItemId String?
+  id           String      @id @default(cuid())
+  syncroItem   SyncroItem? @relation(fields: [syncroItemId], references: [id], onDelete: Cascade)
+  syncroItemId String?     @map("imdbItemId")
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
@@ -130,7 +134,7 @@ model ItemRecommendation {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  item   ImdbItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  item   SyncroItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId String
 
   createdAt DateTime @default(now())

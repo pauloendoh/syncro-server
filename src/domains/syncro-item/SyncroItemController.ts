@@ -7,13 +7,13 @@ import {
   Post,
   QueryParam,
 } from "routing-controllers"
-import { ImdbItemService } from "./ImdbItemService"
+import { SyncroItemService } from "./SyncroItemService"
 import { UseRecommendItem } from "./useCases/UseRecommendItem"
 
 @JsonController()
-export class ImdbItemController {
+export class SyncroItemController {
   constructor(
-    private imdbItemService = new ImdbItemService(),
+    private syncroItemService = new SyncroItemService(),
     private _recommendItem = new UseRecommendItem()
   ) {}
 
@@ -22,7 +22,7 @@ export class ImdbItemController {
     @CurrentUser({ required: true }) user: User,
     @QueryParam("id", { required: true }) id: string
   ) {
-    return this.imdbItemService.findAndSaveDetails(id)
+    return this.syncroItemService.findAndSaveDetails(id)
   }
 
   @Get("/user/:id/imdb-items")
@@ -30,7 +30,7 @@ export class ImdbItemController {
     @CurrentUser({ required: true }) user: User,
     @Param("id") userId: string
   ) {
-    return this.imdbItemService.findImdbItemsRatedByUserId(userId)
+    return this.syncroItemService.findImdbItemsRatedByUserId(userId)
   }
 
   @Post("/recommend-item")
