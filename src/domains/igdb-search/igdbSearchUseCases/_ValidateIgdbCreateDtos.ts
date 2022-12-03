@@ -1,14 +1,14 @@
 import myRedisClient from "../../../utils/redis/myRedisClient"
 import { redisKeys } from "../../../utils/redis/redisKeys"
-import { IgdbClient } from "../../igdb-search/IgdbClient"
-import { IgdbSearchDto } from "../../igdb-search/types/IgdbSearchDto"
+import { IgdbClient } from "../IgdbClient"
 import { IgdbCreateDto } from "../types/IgdbCreateDto"
+import { IgdbSearchDto } from "../types/IgdbSearchDto"
 
 type ExecParams = {
   requesterId: string
 }
 
-export class UseValidateIgdbCreateDtos {
+export class _ValidateIgdbCreateDtos {
   constructor(
     private redisClient = myRedisClient,
     private igdbClient = new IgdbClient()

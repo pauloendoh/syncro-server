@@ -7,7 +7,7 @@ import {
   Put,
   QueryParam,
 } from "routing-controllers"
-import { SyncroItemType } from "../search/types/SyncroItemType"
+import { SyncroItemType } from "../search/types/SyncroItemType/SyncroItemType"
 import { CustomPositionService } from "./CustomPositionService"
 
 @JsonController()

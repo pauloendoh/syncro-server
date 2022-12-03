@@ -1,6 +1,6 @@
 import { SyncroItem, SyncroItemType } from "@prisma/client"
 import myPrismaClient from "../../utils/myPrismaClient"
-import { IgdbCreateDto } from "../search/types/IgdbCreateDto"
+import { IgdbCreateDto } from "../igdb-search/types/IgdbCreateDto"
 import { ImdbItemDetailsResponse } from "./types/ImdbItemDetailsGetDto"
 
 export class SyncroItemRepository {

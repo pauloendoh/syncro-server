@@ -1,6 +1,7 @@
 import { CustomPosition } from "@prisma/client"
 import { NotFoundError } from "routing-controllers"
-import { SyncroItemType } from "../search/types/SyncroItemType"
+import { SyncroItemType } from "../search/types/SyncroItemType/SyncroItemType"
+import { syncroItemTypeMapping } from "../search/types/SyncroItemType/syncroItemTypeMapping"
 import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
 import { CustomPositionRepository } from "./CustomPositionRepository"
 
@@ -39,7 +40,7 @@ export class CustomPositionService {
   ) {
     return this.customPositionRepo.findCustomPositionsByItemType(
       requesterId,
-      itemType === "movie" ? "movie" : "tvSeries"
+      syncroItemTypeMapping[itemType].dbSyncroItemType
     )
   }
 

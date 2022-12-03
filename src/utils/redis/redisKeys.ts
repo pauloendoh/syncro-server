@@ -1,4 +1,4 @@
-import { SyncroItemType } from "../../domains/search/types/SyncroItemType"
+import { SyncroItemType } from "../../domains/search/types/SyncroItemType/SyncroItemType"
 
 export const redisKeys = {
   imdbQueryResult: (query: string, itemType: SyncroItemType) =>

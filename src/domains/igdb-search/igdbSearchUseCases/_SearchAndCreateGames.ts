@@ -1,22 +1,22 @@
+import { _SearchGoogle } from "../../search/searchUseCases/_SearchGoogle"
 import { SyncroItemRepository } from "../../syncro-item/SyncroItemRepository"
 import { IgdbCreateDto } from "../types/IgdbCreateDto"
-import { UseGoogleSearch } from "./UseGoogleSearch"
-import { UseValidateIgdbCreateDtos } from "./UseValidateIgdbCreateDtos"
+import { _ValidateIgdbCreateDtos } from "./_ValidateIgdbCreateDtos"
 
 type ExecParams = {
   query: string
   requesterId: string
 }
 
-export class UseSearchGames {
+export class _SearchAndCreateGames {
   constructor(
-    private _googleSearch = new UseGoogleSearch(),
+    private _searchGoogle = new _SearchGoogle(),
     private syncroItemRepo = new SyncroItemRepository(),
-    private useValidateIgdbCreateDtos = new UseValidateIgdbCreateDtos()
+    private useValidateIgdbCreateDtos = new _ValidateIgdbCreateDtos()
   ) {}
 
-  async exec({ query, requesterId }: ExecParams) {
-    const googleResults = await this._googleSearch.exec(query + " igdb")
+  async exec({ query }: ExecParams) {
+    const googleResults = await this._searchGoogle.exec(query + " igdb")
     const igdbDtos: IgdbCreateDto[] = googleResults
       .filter((r) => r.link.includes("igdb.com/games"))
       .filter((r) => !r.link.includes("/reviews"))

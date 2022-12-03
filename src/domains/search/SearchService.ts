@@ -1,3 +1,4 @@
+import { _SearchAndCreateGames } from "../igdb-search/igdbSearchUseCases/_SearchAndCreateGames"
 import { ImdbSearchClient } from "../imdb-search/ImdbSearchClient"
 import { ImdbRapidApiItem } from "../imdb-search/types/ImdbResultResponseDto"
 import { InterestRepository } from "../interest/InterestRepository"
@@ -5,9 +6,8 @@ import { RatingRepository } from "../rating/RatingRepository"
 import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
 import { SyncroItemService } from "../syncro-item/SyncroItemService"
 import { UserRepository } from "../user/UserRepository"
-import { UseSearchGames } from "./searchUseCases/UseSearchGames"
 import { SearchParams } from "./types/SearchParams"
-import { SyncroItemType } from "./types/SyncroItemType"
+import { SyncroItemType } from "./types/SyncroItemType/SyncroItemType"
 
 export class SearchService {
   constructor(
@@ -17,7 +17,7 @@ export class SearchService {
     private interestRepo = new InterestRepository(),
     private userRepo = new UserRepository(),
     private syncroItemService = new SyncroItemService(),
-    private useSearchGames = new UseSearchGames()
+    private _searchGames = new _SearchAndCreateGames()
   ) {}
 
   overallSearch = async (params: SearchParams, requesterId: string) => {
@@ -26,7 +26,7 @@ export class SearchService {
     }
 
     if (params.type === "game")
-      return this.useSearchGames.exec({
+      return this._searchGames.exec({
         query: params.q,
         requesterId,
       })
