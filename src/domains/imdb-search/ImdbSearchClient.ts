@@ -1,20 +1,22 @@
 import { InternalServerError } from "routing-controllers"
 import myImdbAxios from "../../utils/myImdbAxios"
-import myRedis from "../../utils/redis/myRedisClient"
+import myRedisClient from "../../utils/redis/myRedisClient"
 import { redisKeys } from "../../utils/redis/redisKeys"
 import { urls } from "../../utils/urls"
 import { SyncroItemType } from "../search/types/SyncroItemType"
 import { ImdbItemDetailsResponse } from "../syncro-item/types/ImdbItemDetailsGetDto"
 import { ImdbResultResponseDto } from "./types/ImdbResultResponseDto"
 
-export class ImdbSearchRepository {
+export class ImdbSearchClient {
   constructor(private imdbAxios = myImdbAxios) {}
 
   async searchImdbItems(
     query: string,
     itemType: SyncroItemType
   ): Promise<ImdbResultResponseDto> {
-    const cached = await myRedis.get(redisKeys.imdbQueryResult(query, itemType))
+    const cached = await myRedisClient.get(
+      redisKeys.imdbQueryResult(query, itemType)
+    )
     if (cached) return JSON.parse(cached)
 
     const result = await this.imdbAxios
@@ -28,7 +30,7 @@ export class ImdbSearchRepository {
 
     const ONE_WEEK_IN_SECONDS = 3600 * 24 * 7
 
-    myRedis.set(
+    myRedisClient.set(
       redisKeys.imdbQueryResult(query, itemType),
       JSON.stringify(result),
       "EX",

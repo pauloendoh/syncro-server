@@ -1,5 +1,6 @@
-import { SyncroItemType } from "@prisma/client"
+import { SyncroItem, SyncroItemType } from "@prisma/client"
 import myPrismaClient from "../../utils/myPrismaClient"
+import { IgdbCreateDto } from "../search/types/IgdbCreateDto"
 import { ImdbItemDetailsResponse } from "./types/ImdbItemDetailsGetDto"
 
 export class SyncroItemRepository {
@@ -28,7 +29,7 @@ export class SyncroItemRepository {
     })
   }
 
-  findImdbItemsRatedByUserId(userId: string) {
+  findItemsRatedByUser(userId: string) {
     return this.prismaClient.syncroItem.findMany({
       include: {
         ratings: true,
@@ -49,6 +50,42 @@ export class SyncroItemRepository {
         id: {
           in: imdbIds,
         },
+      },
+    })
+  }
+
+  async findGamesByUrls(urls: string[]) {
+    return this.prismaClient.syncroItem.findMany({
+      where: {
+        igdbUrl: {
+          in: urls,
+        },
+      },
+    })
+  }
+
+  async createGames(games: IgdbCreateDto[]) {
+    return this.prismaClient.$transaction(
+      games.map((game) =>
+        this.prismaClient.syncroItem.create({
+          data: {
+            igdbUrl: game.igdbUrl,
+            title: game.title,
+            imageUrl: game.image,
+            avgRating: 0,
+            ratingCount: 0,
+            type: "game",
+          },
+        })
+      )
+    )
+  }
+
+  async updateSyncroItem(item: SyncroItem) {
+    return this.prismaClient.syncroItem.update({
+      data: item,
+      where: {
+        id: item.id,
       },
     })
   }

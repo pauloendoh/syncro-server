@@ -1,1 +1,1 @@
-export type SyncroItemType = "movie" | "tv series"
+export type SyncroItemType = "movie" | "tv series" | "game"

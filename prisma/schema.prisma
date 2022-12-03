@@ -39,22 +39,24 @@ model User {
 enum SyncroItemType {
   tvSeries
   movie
+  game
 }
 
 model SyncroItem {
-  id          String         @id
+  id          String         @id @default(cuid())
   title       String
   type        SyncroItemType
   imageUrl    String         @default("")
   year        Int?
-  avgRating   Float
-  ratingCount Int
+  avgRating   Float // from external site
+  ratingCount Int // from external site
   plotSummary String         @default("")
   ratings     Rating[]
   interests   Interest[]
 
-  customPositions CustomPosition[]
+  igdbUrl String?
 
+  customPositions     CustomPosition[]
   itemRecommendations ItemRecommendation[]
 }
 

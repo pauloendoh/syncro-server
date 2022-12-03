@@ -8,7 +8,7 @@ import {
   QueryParam,
 } from "routing-controllers"
 import { SyncroItemService } from "./SyncroItemService"
-import { UseRecommendItem } from "./useCases/UseRecommendItem"
+import { UseRecommendItem } from "./syncroItemUseCases/UseRecommendItem"
 
 @JsonController()
 export class SyncroItemController {
@@ -17,7 +17,7 @@ export class SyncroItemController {
     private _recommendItem = new UseRecommendItem()
   ) {}
 
-  @Get("/imdb-item")
+  @Get("/syncro-item")
   async search(
     @CurrentUser({ required: true }) user: User,
     @QueryParam("id", { required: true }) id: string
@@ -30,7 +30,7 @@ export class SyncroItemController {
     @CurrentUser({ required: true }) user: User,
     @Param("id") userId: string
   ) {
-    return this.syncroItemService.findImdbItemsRatedByUserId(userId)
+    return this.syncroItemService.findItemsRatedByUser(userId)
   }
 
   @Post("/recommend-item")

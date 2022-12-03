@@ -1,27 +1,28 @@
-import { ImdbSearchRepository } from "../imdb-search/ImdbSearchRepository"
+import { ImdbSearchClient } from "../imdb-search/ImdbSearchClient"
 import { SyncroItemRepository } from "./SyncroItemRepository"
-
+import { UseFindAndSaveGameDetails } from "./syncroItemUseCases/UseFindAndSaveGameDetails"
+import { UseFindAndSaveImdbDetails } from "./syncroItemUseCases/UseFindAndSaveImdbDetails"
 export class SyncroItemService {
   constructor(
-    private imdbSearchRepository = new ImdbSearchRepository(),
-    private itemRepo = new SyncroItemRepository()
+    private imdbSearchRepository = new ImdbSearchClient(),
+    private itemRepo = new SyncroItemRepository(),
+
+    private _UseFindAndSaveImdbDetails = new UseFindAndSaveImdbDetails(),
+    private useFindGameDetails = new UseFindAndSaveGameDetails()
   ) {}
-  async findAndSaveDetails(imdbId: string) {
-    const found = await this.itemRepo.findSyncroItemById(imdbId)
-    if (found) return found
+  async findAndSaveDetails(itemId: string) {
+    const found = await this.itemRepo.findSyncroItemById(itemId)
+    if (found && found.type === "game") {
+      return this.useFindGameDetails.exec({ syncroItem: found })
+    }
 
-    const splits = imdbId.trim().split("/")
-    const tconst = splits[splits.length - 2] // tconst is only the imdb id in /title/:id
-
-    const result = await this.imdbSearchRepository.fetchImdbItemDetails(tconst)
-
-    if (result.title.titleType === "tvMiniSeries")
-      result.title.titleType = "tvSeries"
-
-    return this.itemRepo.createFromImdbSearch(imdbId, result)
+    return this._UseFindAndSaveImdbDetails.exec({
+      itemId,
+      syncroItem: found,
+    })
   }
 
-  async findImdbItemsRatedByUserId(userId: string) {
-    return this.itemRepo.findImdbItemsRatedByUserId(userId)
+  async findItemsRatedByUser(userId: string) {
+    return this.itemRepo.findItemsRatedByUser(userId)
   }
 }
