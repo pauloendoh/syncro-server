@@ -16,7 +16,7 @@ export class UseFindAndSaveImdbDetails {
     const splits = itemId.trim().split("/")
     const tconst = splits[splits.length - 2] // tconst is only the imdb id in /title/:id
 
-    const result = await this.imdbClient.fetchImdbItemDetails(tconst)
+    const result = await this.imdbClient.fetchAndCacheImdbItemDetails(tconst)
 
     if (result.title.titleType === "tvMiniSeries")
       result.title.titleType = "tvSeries"

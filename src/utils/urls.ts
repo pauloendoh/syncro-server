@@ -8,4 +8,6 @@ export const urls = {
   imdbTitles: "https://imdb8.p.rapidapi.com/title/v2/find",
   imdbTitleDetails: "https://imdb8.p.rapidapi.com/title/get-overview-details",
   igdbGames: "https://api.igdb.com/v4/games",
+  myAnimeListUsername: (username: string) =>
+    `https://myanimelist.net/profile/${username}`,
 }

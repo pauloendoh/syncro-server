@@ -16,6 +16,7 @@ import {
 import { routingControllersToSpec } from "routing-controllers-openapi"
 import { createProfileForUsersWithoutProfile } from "./temp/createProfileForUsersWithoutProfile"
 import { validateJwt } from "./utils/auth/validateJwt"
+import { MyKafkaConsumer } from "./utils/kafka/myKafkaConsumer"
 config()
 
 const routingControllersOptions: RoutingControllersOptions = {
@@ -70,4 +71,7 @@ const server = app.listen(port, () => {
 
   // temp (remove when all production users have a profile)
   createProfileForUsersWithoutProfile()
+
+  const consumer = new MyKafkaConsumer()
+  consumer.start()
 })

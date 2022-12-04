@@ -8,7 +8,10 @@ import { ImdbItemDetailsResponse } from "../syncro-item/types/ImdbItemDetailsGet
 import { ImdbResultResponseDto } from "./types/ImdbResultResponseDto"
 
 export class ImdbSearchClient {
-  constructor(private imdbAxios = myImdbAxios) {}
+  constructor(
+    private imdbAxios = myImdbAxios,
+    private redisClient = myRedisClient
+  ) {}
 
   async searchImdbItems(
     query: string,
@@ -40,8 +43,12 @@ export class ImdbSearchClient {
     return result
   }
 
-  // PE 1/3 - should be cached
-  async fetchImdbItemDetails(imdbId: string): Promise<ImdbItemDetailsResponse> {
+  async fetchAndCacheImdbItemDetails(
+    imdbId: string
+  ): Promise<ImdbItemDetailsResponse> {
+    const cached = await this.redisClient.get(redisKeys.imdbItemDetails(imdbId))
+    if (cached) return JSON.parse(cached)
+
     const result = await this.imdbAxios
       .get<ImdbItemDetailsResponse>(urls.imdbTitleDetails, {
         params: {
@@ -53,6 +60,13 @@ export class ImdbSearchClient {
       .catch((e) => {
         throw new InternalServerError(e?.response?.data?.message || e?.message)
       })
+
+    this.redisClient.set(
+      redisKeys.imdbItemDetails(imdbId),
+      JSON.stringify(result),
+      "EX",
+      3600 * 24 * 7
+    )
 
     return result
   }
