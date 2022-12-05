@@ -16,7 +16,7 @@ import {
 import { routingControllersToSpec } from "routing-controllers-openapi"
 import { createProfileForUsersWithoutProfile } from "./temp/createProfileForUsersWithoutProfile"
 import { validateJwt } from "./utils/auth/validateJwt"
-import { MyKafkaConsumer } from "./utils/kafka/myKafkaConsumer"
+import { MyKafkaConsumer } from "./utils/kafka/_MyKafkaConsumer"
 config()
 
 const routingControllersOptions: RoutingControllersOptions = {

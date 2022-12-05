@@ -1,4 +1,4 @@
-import { Kafka } from "kafkajs"
+import { Kafka, logLevel } from "kafkajs"
 
 export const myKafka = new Kafka({
   brokers: [String(process.env.KAFKA_BROKERS)],
@@ -8,4 +8,5 @@ export const myKafka = new Kafka({
     password: String(process.env.KAFKA_PASSWORD),
   },
   ssl: true,
+  logLevel: logLevel.ERROR,
 })
