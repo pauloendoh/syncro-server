@@ -29,11 +29,14 @@ model User {
   follows    Follow[] @relation("following_users")
   followedBy Follow[] @relation("followers")
 
-  profile          Profile?
-  customPositions  CustomPosition[]
-  notifications    Notification[]
-  recommendedItems ItemRecommendation[]
-  userTokens       UserToken[]
+  profile         Profile?
+  customPositions CustomPosition[]
+  notifications   Notification[]
+
+  userTokens UserToken[]
+
+  itemsRecommendedFromThem ItemRecommendation[] @relation("item_recommendations_from_user")
+  itemsRecommendedToThem   ItemRecommendation[] @relation("item_recommendations_to_user")
 }
 
 enum SyncroItemType {
@@ -131,9 +134,13 @@ model CustomPosition {
 }
 
 model ItemRecommendation {
-  id     String @id @default(cuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id String @id @default(cuid())
+
+  toUser   User?   @relation(fields: [toUserId], references: [id], onDelete: Cascade, name: "item_recommendations_to_user")
+  toUserId String?
+
+  fromUser   User   @relation(fields: [fromUserId], references: [id], onDelete: Cascade, name: "item_recommendations_from_user")
+  fromUserId String
 
   item   SyncroItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId String

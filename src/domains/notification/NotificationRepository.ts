@@ -21,7 +21,7 @@ export class NotificationRepository {
         itemRecommendation: {
           include: {
             item: true,
-            user: {
+            fromUser: {
               select: userSelectFields,
             },
           },
@@ -58,7 +58,7 @@ export class NotificationRepository {
     const itemRecommendation = await this.prismaClient.itemRecommendation.create(
       {
         data: {
-          userId: options.requesterId,
+          fromUserId: options.requesterId,
           itemId: options.itemId,
         },
       }
