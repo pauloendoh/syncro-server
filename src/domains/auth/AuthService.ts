@@ -5,6 +5,7 @@ import { config } from "dotenv"
 import { sign } from "jsonwebtoken"
 import { BadRequestError, NotFoundError } from "routing-controllers"
 import myPrismaClient from "../../utils/myPrismaClient"
+import { EmailService } from "../email/EmailService"
 import { UserTokenRepository } from "../user-token/UserTokenRepository"
 import { UserRepository } from "../user/UserRepository"
 import { AuthRepository } from "./AuthRepository"
@@ -19,7 +20,8 @@ export class AuthService {
   constructor(
     private authRepo = new AuthRepository(),
     private userRepo = new UserRepository(),
-    private tokenRepo = new UserTokenRepository()
+    private tokenRepo = new UserTokenRepository(),
+    private emailService = new EmailService()
   ) {}
 
   async register(dto: RegisterDto) {
@@ -62,6 +64,8 @@ export class AuthService {
     })
 
     const { token, expiresAt } = this.getSignInToken(createdUser)
+    this.emailService.notifyNewUserToDevs(createdUser.username)
+
     return new AuthUserGetDto(createdUser, token, expiresAt)
   }
 
@@ -132,6 +136,9 @@ export class AuthService {
         }
       )
     })
+
+    this.emailService.notifyNewUserToDevs(authUser.username)
+
     return authUser
   }
 
