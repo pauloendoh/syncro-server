@@ -29,10 +29,14 @@ export class SyncroItemRepository {
     })
   }
 
-  findItemsRatedByUser(userId: string) {
+  findItemsRatedByUserDesc(userId: string) {
     return this.prismaClient.syncroItem.findMany({
       include: {
-        ratings: true,
+        ratings: {
+          where: {
+            userId,
+          },
+        },
       },
       where: {
         ratings: {
@@ -86,6 +90,38 @@ export class SyncroItemRepository {
       data: item,
       where: {
         id: item.id,
+      },
+    })
+  }
+
+  async filterItemsThatUserSaved(userId: string, itemIds: string[]) {
+    return this.prismaClient.syncroItem.findMany({
+      where: {
+        AND: [
+          {
+            id: {
+              in: itemIds,
+            },
+          },
+          {
+            OR: [
+              {
+                ratings: {
+                  some: {
+                    userId,
+                  },
+                },
+              },
+              {
+                interests: {
+                  some: {
+                    userId,
+                  },
+                },
+              },
+            ],
+          },
+        ],
       },
     })
   }

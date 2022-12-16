@@ -21,8 +21,4 @@ export class SyncroItemService {
       syncroItem: found,
     })
   }
-
-  async findItemsRatedByUser(userId: string) {
-    return this.itemRepo.findItemsRatedByUser(userId)
-  }
 }

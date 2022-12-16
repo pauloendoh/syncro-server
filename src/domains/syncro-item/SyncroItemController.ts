@@ -3,7 +3,6 @@ import {
   CurrentUser,
   Get,
   JsonController,
-  Param,
   Post,
   QueryParam,
 } from "routing-controllers"
@@ -23,14 +22,6 @@ export class SyncroItemController {
     @QueryParam("id", { required: true }) id: string
   ) {
     return this.syncroItemService.findAndSaveDetails(id)
-  }
-
-  @Get("/user/:id/imdb-items")
-  async findImdbItemsRatedByUserId(
-    @CurrentUser({ required: true }) user: User,
-    @Param("id") userId: string
-  ) {
-    return this.syncroItemService.findItemsRatedByUser(userId)
   }
 
   @Post("/recommend-item")
