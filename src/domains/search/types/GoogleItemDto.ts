@@ -16,6 +16,8 @@ interface Pagemap {
   cse_thumbnail: Csethumbnail[]
   metatags: Metatag[]
   cse_image: Cseimage[]
+  product?: Product[]
+  aggregaterating?: Aggregaterating[]
 }
 
 interface Cseimage {
@@ -50,4 +52,18 @@ interface Csethumbnail {
   src: string
   width: string
   height: string
+}
+
+interface Product {
+  image: string
+  name: string
+  genre: string
+  description: string
+}
+
+interface Aggregaterating {
+  ratingvalue: string
+  ratingcount: string
+  worstrating: string
+  bestrating: string
 }

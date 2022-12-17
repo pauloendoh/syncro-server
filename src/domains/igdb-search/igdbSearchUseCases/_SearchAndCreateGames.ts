@@ -1,7 +1,7 @@
 import { _SearchGoogle } from "../../search/searchUseCases/_SearchGoogle"
 import { SyncroItemRepository } from "../../syncro-item/SyncroItemRepository"
 import { IgdbCreateDto } from "../types/IgdbCreateDto"
-import { _ValidateIgdbCreateDtos } from "./_ValidateIgdbCreateDtos"
+import { _VerifyGameTitlesInIgdb } from "./_VerifyGameTitlesInIgdb"
 
 type ExecParams = {
   query: string
@@ -12,7 +12,7 @@ export class _SearchAndCreateGames {
   constructor(
     private _searchGoogle = new _SearchGoogle(),
     private syncroItemRepo = new SyncroItemRepository(),
-    private useValidateIgdbCreateDtos = new _ValidateIgdbCreateDtos()
+    private _verifyGameTitlesInIgdb = new _VerifyGameTitlesInIgdb()
   ) {}
 
   async exec({ query }: ExecParams) {
@@ -35,20 +35,20 @@ export class _SearchAndCreateGames {
         }
       })
 
-    const validIgdbDtos = await this.useValidateIgdbCreateDtos.exec(igdbDtos)
+    const verifiedIgdbDtos = await this._verifyGameTitlesInIgdb.exec(igdbDtos)
 
-    const foundGames = await this.syncroItemRepo.findGamesByUrls(
-      validIgdbDtos.map((i) => i.igdbUrl)
+    const foundGamesInDb = await this.syncroItemRepo.findGamesByUrls(
+      verifiedIgdbDtos.map((i) => i.igdbUrl)
     )
 
-    const foundGamesUrls = foundGames.map((g) => g.igdbUrl)
+    const foundGamesUrls = foundGamesInDb.map((g) => g.igdbUrl)
 
-    const notFoundGames = validIgdbDtos.filter(
+    const notFoundGames = verifiedIgdbDtos.filter(
       (g) => !foundGamesUrls.includes(g.igdbUrl)
     )
 
     const createdGames = await this.syncroItemRepo.createGames(notFoundGames)
 
-    return [...foundGames, ...createdGames]
+    return [...foundGamesInDb, ...createdGames]
   }
 }

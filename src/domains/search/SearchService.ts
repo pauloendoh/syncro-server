@@ -3,9 +3,9 @@ import { _SearchAndCreateGames } from "../igdb-search/igdbSearchUseCases/_Search
 import { ImdbSearchClient } from "../imdb-search/ImdbSearchClient"
 import { ImdbRapidApiItem } from "../imdb-search/types/ImdbResultResponseDto"
 import { InterestRepository } from "../interest/InterestRepository"
+import { MangaService } from "../manga/MangaService"
 import { RatingRepository } from "../rating/RatingRepository"
 import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
-import { SyncroItemService } from "../syncro-item/SyncroItemService"
 import { UserRepository } from "../user/UserRepository"
 import { SearchParams } from "./types/SearchParams"
 
@@ -16,13 +16,17 @@ export class SearchService {
     private ratingRepo = new RatingRepository(),
     private interestRepo = new InterestRepository(),
     private userRepo = new UserRepository(),
-    private syncroItemService = new SyncroItemService(),
-    private _searchGames = new _SearchAndCreateGames()
+    private _searchGames = new _SearchAndCreateGames(),
+    private mangaService = new MangaService()
   ) {}
 
   overallSearch = async (params: SearchParams, requesterId: string) => {
     if (params.type === "tvSeries" || params.type === "movie") {
       return this.searchImdbTitles(params.q, requesterId, params.type)
+    }
+
+    if (params.type === "manga") {
+      return this.mangaService.searchAndCreateMangas(params.q)
     }
 
     if (params.type === "game")

@@ -8,7 +8,8 @@ type ExecParams = {
   requesterId: string
 }
 
-export class _ValidateIgdbCreateDtos {
+// PE 1/3 - improve name?
+export class _VerifyGameTitlesInIgdb {
   constructor(
     private redisClient = myRedisClient,
     private igdbClient = new IgdbClient()
