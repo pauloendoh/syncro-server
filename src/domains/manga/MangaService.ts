@@ -1,5 +1,6 @@
 import { SyncroItem } from "@prisma/client"
 import Axios from "axios"
+import { upToNDecimals } from "endoh-utils"
 import { JSDOM } from "jsdom"
 import { BadRequestError } from "routing-controllers"
 import { _SearchGoogleAndCache } from "../search/searchUseCases/_SearchGoogleAndCache"
@@ -51,7 +52,10 @@ export class MangaService {
         mangaMalUrl: r.link,
         image: r.pagemap["cse_thumbnail"][0]["src"],
         title: r.pagemap["product"]?.[0].name || r.title,
-        avgRating: Number(r.pagemap["aggregaterating"]?.[0]?.ratingvalue || 0),
+        avgRating: upToNDecimals(
+          Number(r.pagemap["aggregaterating"]?.[0]?.ratingvalue || 0),
+          1
+        ),
         ratingCount: Number(
           r.pagemap["aggregaterating"]?.[0]?.ratingcount || 0
         ),
