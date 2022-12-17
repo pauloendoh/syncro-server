@@ -8,7 +8,7 @@ type ExecParams = {
 }
 
 // CACHE THIS
-export class _SearchGoogle {
+export class _SearchGoogleAndCache {
   async exec(query: string): Promise<GoogleItemDto[]> {
     const cached = await myRedisClient.get(redisKeys.googleSearch(query))
     if (cached) return JSON.parse(cached)

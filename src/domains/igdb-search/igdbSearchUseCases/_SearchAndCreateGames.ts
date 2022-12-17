@@ -1,4 +1,4 @@
-import { _SearchGoogle } from "../../search/searchUseCases/_SearchGoogle"
+import { _SearchGoogleAndCache } from "../../search/searchUseCases/_SearchGoogleAndCache"
 import { SyncroItemRepository } from "../../syncro-item/SyncroItemRepository"
 import { IgdbCreateDto } from "../types/IgdbCreateDto"
 import { _VerifyGameTitlesInIgdb } from "./_VerifyGameTitlesInIgdb"
@@ -10,7 +10,7 @@ type ExecParams = {
 
 export class _SearchAndCreateGames {
   constructor(
-    private _searchGoogle = new _SearchGoogle(),
+    private _searchGoogle = new _SearchGoogleAndCache(),
     private syncroItemRepo = new SyncroItemRepository(),
     private _verifyGameTitlesInIgdb = new _VerifyGameTitlesInIgdb()
   ) {}

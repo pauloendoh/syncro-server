@@ -2,7 +2,7 @@ import { SyncroItem } from "@prisma/client"
 import Axios from "axios"
 import { JSDOM } from "jsdom"
 import { BadRequestError } from "routing-controllers"
-import { _SearchGoogle } from "../search/searchUseCases/_SearchGoogle"
+import { _SearchGoogleAndCache } from "../search/searchUseCases/_SearchGoogleAndCache"
 import { GoogleItemDto } from "../search/types/GoogleItemDto"
 import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
 import { MangaRepository } from "./MangaRepository"
@@ -10,7 +10,7 @@ import { MangaCreateDto } from "./types/MangaCreateDto"
 
 export class MangaService {
   constructor(
-    private _searchGoogle = new _SearchGoogle(),
+    private _searchGoogle = new _SearchGoogleAndCache(),
     private mangaRepo = new MangaRepository(),
     private axios = Axios.create(),
     private itemRepo = new SyncroItemRepository()
@@ -41,6 +41,7 @@ export class MangaService {
       .filter((r) => {
         const afterSlash = r.link.split("https://myanimelist.net/manga/").pop()
         if (!afterSlash) return false
+        if (r.link.includes("?")) return false // query parameters. Eg:https://myanimelist.net/manga/4632/Oyasumi_Punpun?xid=17259%2C1500002%2C15700002%2C15700021%2C15700186%2C15700190%2C15700248%2C15700253
         const slashesCount = afterSlash.split("/").length - 1
         return slashesCount === 1
 

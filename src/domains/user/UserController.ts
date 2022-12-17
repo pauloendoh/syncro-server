@@ -15,6 +15,7 @@ export class UserController {
   }
 
   @Get("/user/:userId/items")
+  // missing item type?
   async findUserItems(
     @Param("userId") userId: string,
     @CurrentUser({ required: true }) requester: User
