@@ -1,3 +1,4 @@
+import { SyncroItemType } from "@prisma/client"
 import { _SearchAndCreateGames } from "../igdb-search/igdbSearchUseCases/_SearchAndCreateGames"
 import { ImdbSearchClient } from "../imdb-search/ImdbSearchClient"
 import { ImdbRapidApiItem } from "../imdb-search/types/ImdbResultResponseDto"
@@ -7,7 +8,6 @@ import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
 import { SyncroItemService } from "../syncro-item/SyncroItemService"
 import { UserRepository } from "../user/UserRepository"
 import { SearchParams } from "./types/SearchParams"
-import { SyncroItemType } from "./types/SyncroItemType/SyncroItemType"
 
 export class SearchService {
   constructor(
@@ -21,7 +21,7 @@ export class SearchService {
   ) {}
 
   overallSearch = async (params: SearchParams, requesterId: string) => {
-    if (params.type === "tv series" || params.type === "movie") {
+    if (params.type === "tvSeries" || params.type === "movie") {
       return this.searchImdbTitles(params.q, requesterId, params.type)
     }
 

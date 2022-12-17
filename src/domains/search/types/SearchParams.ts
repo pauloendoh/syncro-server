@@ -1,5 +1,5 @@
+import { SyncroItemType } from "@prisma/client"
 import { IsString } from "class-validator"
-import { SyncroItemType } from "./SyncroItemType/SyncroItemType"
 
 export class SearchParams {
   @IsString()

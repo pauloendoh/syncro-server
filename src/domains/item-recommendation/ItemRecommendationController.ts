@@ -1,11 +1,10 @@
-import { User } from "@prisma/client"
+import { SyncroItemType, User } from "@prisma/client"
 import {
   CurrentUser,
   Get,
   JsonController,
   QueryParam,
 } from "routing-controllers"
-import { SyncroItemType } from "../search/types/SyncroItemType/SyncroItemType"
 import { ItemRecommendationService } from "./ItemRecommendationService"
 
 @JsonController()

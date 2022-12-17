@@ -1,5 +1,4 @@
-import { SyncroItemType as MySyncroItemType } from "../search/types/SyncroItemType/SyncroItemType"
-import { syncroItemTypeMapping } from "../search/types/SyncroItemType/syncroItemTypeMapping"
+import { SyncroItemType } from "@prisma/client"
 import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
 import { ItemRecommendationRepository } from "./ItemRecommendationRepository"
 
@@ -16,17 +15,15 @@ export class ItemRecommendationService {
   async findItemsToRecommendToUser(params: {
     requesterId: string
     userId: string
-    itemType: MySyncroItemType
+    itemType: SyncroItemType
   }) {
     const { requesterId, userId, itemType } = params
-
-    const dbSyncroItemType = syncroItemTypeMapping[itemType].dbSyncroItemType
 
     const allMyRatedItems = await this.itemRepo.findItemsRatedByUserDesc(
       requesterId
     )
     const myRatedItems = allMyRatedItems.filter(
-      (item) => item.type === dbSyncroItemType
+      (item) => item.type === itemType
     )
 
     const itemIds = myRatedItems.map((item) => item.id)

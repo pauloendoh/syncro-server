@@ -1,9 +1,9 @@
+import { SyncroItemType } from "@prisma/client"
 import { InternalServerError } from "routing-controllers"
 import myImdbAxios from "../../utils/myImdbAxios"
 import myRedisClient from "../../utils/redis/myRedisClient"
 import { redisKeys } from "../../utils/redis/redisKeys"
 import { urls } from "../../utils/urls"
-import { SyncroItemType } from "../search/types/SyncroItemType/SyncroItemType"
 import { ImdbItemDetailsResponse } from "../syncro-item/types/ImdbItemDetailsGetDto"
 import { ImdbResultResponseDto } from "./types/ImdbResultResponseDto"
 
@@ -26,7 +26,7 @@ export class ImdbSearchClient {
       .get<ImdbResultResponseDto>(urls.imdbTitles, {
         params: {
           title: query,
-          titleType: itemType === "tv series" ? "tvSeries" : "movie", // PE 1/3 - for now, only tvSeries
+          titleType: itemType === "tvSeries" ? "tvSeries" : "movie", // PE 1/3 - for now, only tvSeries
         },
       })
       .then((res) => res.data)

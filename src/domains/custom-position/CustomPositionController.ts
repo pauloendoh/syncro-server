@@ -1,4 +1,4 @@
-import { CustomPosition, User } from "@prisma/client"
+import { CustomPosition, SyncroItemType, User } from "@prisma/client"
 import {
   Body,
   CurrentUser,
@@ -7,7 +7,6 @@ import {
   Put,
   QueryParam,
 } from "routing-controllers"
-import { SyncroItemType } from "../search/types/SyncroItemType/SyncroItemType"
 import { CustomPositionService } from "./CustomPositionService"
 
 @JsonController()
