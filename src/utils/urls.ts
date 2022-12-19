@@ -10,4 +10,6 @@ export const urls = {
   igdbGames: "https://api.igdb.com/v4/games",
   myAnimeListUsername: (username: string) =>
     `https://myanimelist.net/profile/${username}`,
+  malUserAnimeList: (username: string) =>
+    `https://myanimelist.net/animelist/${username}`,
 }

@@ -99,4 +99,32 @@ export class RatingRepository {
       },
     })
   }
+
+  async upsertRating(params: {
+    itemId: string
+    ratingValue: number
+    userId: string
+  }) {
+    const found = await this.prismaClient.rating.findFirst({
+      where: {
+        userId: params.userId,
+        syncroItemId: params.itemId,
+      },
+    })
+
+    if (found) {
+      return this.updateRating({
+        ...found,
+        ratingValue: params.ratingValue,
+      })
+    }
+
+    return this.prismaClient.rating.create({
+      data: {
+        ratingValue: params.ratingValue,
+        syncroItemId: params.itemId,
+        userId: params.userId,
+      },
+    })
+  }
 }

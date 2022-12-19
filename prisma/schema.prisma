@@ -34,8 +34,10 @@ model User {
 
   userTokens UserToken[]
 
-  itemsRecommendedFromThem ItemRecommendation[] @relation("item_recommendations_from_user")
-  itemsRecommendedToThem   ItemRecommendation[] @relation("item_recommendations_to_user")
+  itemsRecommendedFromThem ItemRecommendation[]   @relation("item_recommendations_from_user")
+  itemsRecommendedToThem   ItemRecommendation[]   @relation("item_recommendations_to_user")
+  ratingsImportRequests    RatingsImportRequest[]
+  ratingImportItems        RatingsImportItem[]
 }
 
 enum SyncroItemType {
@@ -65,11 +67,12 @@ model SyncroItem {
 
   customPositions     CustomPosition[]
   itemRecommendations ItemRecommendation[]
+  ratingImportItems   RatingsImportItem[]
 }
 
 model Rating {
   id           String      @id @default(cuid())
-  syncroItem   SyncroItem? @relation(fields: [syncroItemId], references: [id])
+  syncroItem   SyncroItem? @relation(fields: [syncroItemId], references: [id], onDelete: Cascade)
   syncroItemId String?
 
   user        User   @relation(fields: [userId], references: [id])
@@ -167,6 +170,9 @@ model Notification {
 
   itemRecommendation   ItemRecommendation? @relation(fields: [itemRecommendationId], references: [id], onDelete: Cascade)
   itemRecommendationId String?             @unique
+
+  ratingsImportRequest   RatingsImportRequest? @relation(fields: [ratingsImportRequestId], references: [id], onDelete: Cascade)
+  ratingsImportRequestId String?               @unique
 }
 
 enum TokenType {
@@ -186,4 +192,62 @@ model UserToken {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum RatingsImportRequestStatus {
+  started
+  finishedSuccessfully
+  errorWhileInitialScraping
+}
+
+enum RatingsImportRequestImportFrom {
+  MyAnimeList
+}
+
+model RatingsImportRequest {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  importFrom RatingsImportRequestImportFrom @default(MyAnimeList)
+  status     RatingsImportRequestStatus     @default(started)
+
+  remainingItemsQty Int
+  importItems       RatingsImportItem[]
+  notification      Notification?
+}
+
+enum RatingsImportItemStatus {
+  waiting
+  importedSuccessfully
+  alreadyRated
+  errorOrNotFound
+  isMovie
+}
+
+model RatingsImportItem {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+
+  request   RatingsImportRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  requestId String
+
+  status RatingsImportItemStatus @default(waiting)
+
+  syncroItem   SyncroItem? @relation(fields: [syncroItemId], references: [id], onDelete: Cascade)
+  syncroItemId String?
+
+  ratingValue Int
+
+  originalTitle String
+  originalLink  String
+
+  errorQty Int @default(0)
 }

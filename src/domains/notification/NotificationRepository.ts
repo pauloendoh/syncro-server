@@ -1,4 +1,4 @@
-import { Follow } from "@prisma/client"
+import { Follow, RatingsImportRequest } from "@prisma/client"
 import myPrismaClient from "../../utils/myPrismaClient"
 import { userSelectFields } from "../../utils/prisma/fields/user/userSelectFields"
 
@@ -21,12 +21,12 @@ export class NotificationRepository {
         itemRecommendation: {
           include: {
             item: true,
-
             fromUser: {
               select: userSelectFields,
             },
           },
         },
+        ratingsImportRequest: true,
       },
     })
   }
@@ -74,5 +74,19 @@ export class NotificationRepository {
     })
 
     return itemRecommendation
+  }
+
+  async createFinishRatingImportNotification(
+    importRequest: RatingsImportRequest
+  ) {
+    return this.prismaClient.notification.create({
+      data: {
+        userId: importRequest.userId,
+        ratingsImportRequestId: importRequest.id,
+      },
+      include: {
+        ratingsImportRequest: true,
+      },
+    })
   }
 }

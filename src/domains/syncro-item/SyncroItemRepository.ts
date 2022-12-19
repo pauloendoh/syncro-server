@@ -1,4 +1,4 @@
-import { SyncroItem, SyncroItemType } from "@prisma/client"
+import { Prisma, SyncroItem, SyncroItemType } from "@prisma/client"
 import myPrismaClient from "../../utils/myPrismaClient"
 import { IgdbCreateDto } from "../igdb-search/types/IgdbCreateDto"
 import { ImdbItemDetailsResponse } from "./types/ImdbItemDetailsGetDto"
@@ -14,10 +14,31 @@ export class SyncroItemRepository {
     })
   }
 
-  createFromImdbSearch(id: string, data: ImdbItemDetailsResponse) {
+  async createFromImdbSearch(id: string, data: ImdbItemDetailsResponse) {
+    const found = await this.prismaClient.syncroItem.findFirst({
+      where: {
+        id: data.id,
+      },
+    })
+
+    if (found) {
+      found.avgRating = data.ratings?.rating || 0
+      found.imageUrl = data.title.image?.url
+      found.ratingCount = data.ratings?.ratingCount || 0
+      found.title = data.title.title
+      found.type = data.title.titleType as SyncroItemType
+      found.year = data.title.year
+      found.plotSummary = data.plotOutline?.text || data.plotSummary?.text
+      return this.prismaClient.syncroItem.update({
+        where: {
+          id: data.id,
+        },
+        data: found,
+      })
+    }
     return this.prismaClient.syncroItem.create({
       data: {
-        id,
+        id: data.id,
         avgRating: data.ratings?.rating || 0,
         imageUrl: data.title.image?.url,
         ratingCount: data.ratings?.ratingCount || 0,
@@ -123,6 +144,12 @@ export class SyncroItemRepository {
           },
         ],
       },
+    })
+  }
+
+  async createSyncroItem(createInput: Prisma.SyncroItemCreateInput) {
+    return this.prismaClient.syncroItem.create({
+      data: createInput,
     })
   }
 }

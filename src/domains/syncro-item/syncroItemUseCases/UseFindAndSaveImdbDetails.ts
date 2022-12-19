@@ -11,10 +11,10 @@ export class UseFindAndSaveImdbDetails {
   ) {}
 
   exec = async ({ syncroItem, itemId }: ExecParams) => {
-    if (syncroItem) return syncroItem
+    if (syncroItem?.year) return syncroItem
 
     const splits = itemId.trim().split("/")
-    const tconst = splits[splits.length - 2] // tconst is only the imdb id in /title/:id
+    const tconst = splits[splits.length - 2] // tconst is only the imdb id in /title/:id/
 
     const result = await this.imdbClient.fetchAndCacheImdbItemDetails(tconst)
 
