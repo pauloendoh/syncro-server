@@ -1,7 +1,6 @@
 import axios from "axios"
 
 const igdbAxios = axios.create()
-igdbAxios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
 
 igdbAxios.interceptors.request.use(async (config) => {
   if (!config.headers) return config
