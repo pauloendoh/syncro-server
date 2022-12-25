@@ -6,6 +6,7 @@ import {
   JsonController,
   Param,
   Post,
+  QueryParam,
 } from "routing-controllers"
 import { InterestService } from "./InterestService"
 
@@ -32,5 +33,13 @@ export class InterestController {
     @Body() body: Interest
   ) {
     return this.interestService.saveInterest(body, user.id)
+  }
+
+  @Post("/toggle-save/item")
+  async toggleSaveItem(
+    @CurrentUser({ required: true }) user: User,
+    @QueryParam("id") id: string
+  ) {
+    return this.interestService.toggleSaveItem(id, user.id)
   }
 }

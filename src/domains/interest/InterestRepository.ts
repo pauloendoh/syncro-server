@@ -40,6 +40,16 @@ export class InterestRepository {
     })
   }
 
+  saveItem(itemId: string, requesterId: string) {
+    return this.prismaClient.interest.create({
+      data: {
+        userId: requesterId,
+        syncroItemId: itemId,
+        interestLevel: 3,
+      },
+    })
+  }
+
   updateInterest(interest: Interest) {
     return this.prismaClient.interest.update({
       data: interest,

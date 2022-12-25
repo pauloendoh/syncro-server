@@ -19,6 +19,19 @@ export class InterestService {
     return this.createInterest(interest, requesterId)
   }
 
+  async toggleSaveItem(itemId: string, requesterId: string) {
+    const interests = await this.interestRepo.findInterestsByUserId(requesterId)
+
+    const found = interests.find((i) => i.syncroItemId === itemId)
+
+    if (found) {
+      await this.interestRepo.deleteInterest(found.id)
+      return "deleted"
+    }
+
+    return this.interestRepo.saveItem(itemId, requesterId)
+  }
+
   async createInterest(interest: Interest, requesterId: string) {
     if (interest.interestLevel === null && interest.interestLevel === null)
       return null
