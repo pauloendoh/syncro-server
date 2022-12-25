@@ -40,14 +40,30 @@ export class InterestRepository {
     })
   }
 
-  saveItem(itemId: string, requesterId: string) {
+  saveItem(params: { itemId: string; requesterId: string; position: number }) {
     return this.prismaClient.interest.create({
       data: {
-        userId: requesterId,
-        syncroItemId: itemId,
+        userId: params.requesterId,
+        syncroItemId: params.itemId,
+        position: params.position,
         interestLevel: 3,
       },
     })
+  }
+
+  updateMany(interests: Interest[]) {
+    return this.prismaClient.$transaction(
+      interests.map((i) =>
+        this.prismaClient.interest.update({
+          where: {
+            id: i.id,
+          },
+          data: {
+            position: i.position,
+          },
+        })
+      )
+    )
   }
 
   updateInterest(interest: Interest) {
@@ -107,6 +123,9 @@ export class InterestRepository {
       include: {
         syncroItem: true,
       },
+      orderBy: {
+        position: "asc",
+      },
     })
   }
 
@@ -120,6 +139,9 @@ export class InterestRepository {
       },
       include: {
         syncroItem: true,
+      },
+      orderBy: {
+        position: "asc",
       },
     })
   }

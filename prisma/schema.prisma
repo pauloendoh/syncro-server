@@ -92,6 +92,7 @@ model Interest {
   userId String
 
   interestLevel Int
+  position      Int @default(1)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

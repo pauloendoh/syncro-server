@@ -1,12 +1,14 @@
 import { Interest, SyncroItemType } from "@prisma/client"
-import { ForbiddenError } from "routing-controllers"
+import { ForbiddenError, NotFoundError } from "routing-controllers"
 import { CustomPositionService } from "../custom-position/CustomPositionService"
+import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
 import { InterestRepository } from "./InterestRepository"
 
 export class InterestService {
   constructor(
     private interestRepo = new InterestRepository(),
-    private customPositionService = new CustomPositionService()
+    private customPositionService = new CustomPositionService(),
+    private itemRepo = new SyncroItemRepository()
   ) {}
 
   async findInterestsByUserId(userId: string) {
@@ -25,11 +27,51 @@ export class InterestService {
     const found = interests.find((i) => i.syncroItemId === itemId)
 
     if (found) {
-      await this.interestRepo.deleteInterest(found.id)
-      return "deleted"
+      return this.removeSavedItem(found, requesterId)
     }
 
-    return this.interestRepo.saveItem(itemId, requesterId)
+    return this.handleSaveItem(itemId, requesterId)
+  }
+
+  async removeSavedItem(interest: Interest, requesterId: string) {
+    const item = await this.itemRepo.findSyncroItemById(interest.syncroItemId!)
+
+    if (!item) throw new NotFoundError("Item not found.")
+
+    await this.interestRepo.deleteInterest(interest.id)
+
+    const savedItems = await this.interestRepo.findSavedItemsByType(
+      requesterId,
+      item.type
+    )
+
+    const normalizedItems = savedItems.map((i, index) => ({
+      ...i,
+      position: index + 1,
+    }))
+    await this.interestRepo.updateMany(normalizedItems)
+
+    return "deleted"
+  }
+
+  async handleSaveItem(itemId: string, requesterId: string) {
+    const item = await this.itemRepo.findSyncroItemById(itemId)
+
+    if (!item) throw new NotFoundError("Item not found.")
+
+    const savedItems = await this.interestRepo.findSavedItemsByType(
+      requesterId,
+      item.type
+    )
+
+    const lastPosition = savedItems.length
+    const nextPosition = lastPosition + 1
+
+    return this.interestRepo.saveItem({
+      itemId,
+      requesterId,
+      position: nextPosition,
+    })
   }
 
   async createInterest(interest: Interest, requesterId: string) {
