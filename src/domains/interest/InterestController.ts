@@ -1,4 +1,4 @@
-import { Interest, User } from "@prisma/client"
+import { Interest, SyncroItemType, User } from "@prisma/client"
 import {
   Body,
   CurrentUser,
@@ -41,5 +41,13 @@ export class InterestController {
     @QueryParam("id") id: string
   ) {
     return this.interestService.toggleSaveItem(id, user.id)
+  }
+
+  @Get("/saved-items")
+  async findSavedItemsByType(
+    @CurrentUser({ required: true }) user: User,
+    @QueryParam("type", { required: true }) type: SyncroItemType
+  ) {
+    return this.interestService.findSavedItemsByType(user.id, type)
   }
 }

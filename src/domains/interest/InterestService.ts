@@ -1,4 +1,4 @@
-import { Interest } from "@prisma/client"
+import { Interest, SyncroItemType } from "@prisma/client"
 import { ForbiddenError } from "routing-controllers"
 import { CustomPositionService } from "../custom-position/CustomPositionService"
 import { InterestRepository } from "./InterestRepository"
@@ -71,5 +71,9 @@ export class InterestService {
     interest.userId = requesterId
 
     return this.interestRepo.updateInterest(interest)
+  }
+
+  async findSavedItemsByType(userId: string, type: SyncroItemType) {
+    return this.interestRepo.findSavedItemsByType(userId, type)
   }
 }

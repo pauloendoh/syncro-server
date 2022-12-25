@@ -1,4 +1,4 @@
-import { Interest } from "@prisma/client"
+import { Interest, SyncroItemType } from "@prisma/client"
 import myPrismaClient from "../../utils/myPrismaClient"
 
 export class InterestRepository {
@@ -95,6 +95,20 @@ export class InterestRepository {
       by: ["userId"],
       _count: {
         userId: true,
+      },
+    })
+  }
+
+  async findSavedItemsByType(userId: string, type: SyncroItemType) {
+    return this.prismaClient.interest.findMany({
+      where: {
+        userId,
+        syncroItem: {
+          type,
+        },
+      },
+      include: {
+        syncroItem: true,
       },
     })
   }
