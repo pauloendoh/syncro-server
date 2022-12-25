@@ -73,6 +73,10 @@ export class InterestService {
     return this.interestRepo.updateInterest(interest)
   }
 
+  async findSavedItems(userId: string) {
+    return this.interestRepo.findSavedItems(userId)
+  }
+
   async findSavedItemsByType(userId: string, type: SyncroItemType) {
     return this.interestRepo.findSavedItemsByType(userId, type)
   }

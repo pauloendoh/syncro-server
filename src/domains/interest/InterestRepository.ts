@@ -99,6 +99,17 @@ export class InterestRepository {
     })
   }
 
+  async findSavedItems(userId: string) {
+    return this.prismaClient.interest.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        syncroItem: true,
+      },
+    })
+  }
+
   async findSavedItemsByType(userId: string, type: SyncroItemType) {
     return this.prismaClient.interest.findMany({
       where: {

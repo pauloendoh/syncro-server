@@ -44,6 +44,11 @@ export class InterestController {
   }
 
   @Get("/saved-items")
+  async findSavedItems(@CurrentUser({ required: true }) user: User) {
+    return this.interestService.findSavedItems(user.id)
+  }
+
+  @Get("/saved-items")
   async findSavedItemsByType(
     @CurrentUser({ required: true }) user: User,
     @QueryParam("type", { required: true }) type: SyncroItemType

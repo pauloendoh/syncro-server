@@ -18,7 +18,11 @@ export class UseFindAndSaveImdbDetails {
 
     const result = await this.imdbClient.fetchAndCacheImdbItemDetails(tconst)
 
+    // PE 1/3 - anything that is not a movie, is a tvSeries ? ...
     if (result.title.titleType === "tvMiniSeries")
+      result.title.titleType = "tvSeries"
+
+    if (result.title.titleType === "tvEpisode")
       result.title.titleType = "tvSeries"
 
     return this.itemRepo.createFromImdbSearch(itemId, result)
