@@ -34,6 +34,7 @@ export class UseCreateFollowPushNotification {
       messages.push({
         to: pushToken.token,
         sound: "default",
+        channelId: "default",
         title: "New follower!",
         body: `${follower?.username} started following you`,
         data: { withSome: "data" },

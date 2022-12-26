@@ -61,14 +61,19 @@ export class SearchService {
       imdbIds
     )
 
-    return results.map((result) => ({
-      ...result,
-      syncroItem: imdbItems.find((item) => item.id === result.id),
-      myRating: myRatings.find((rating) => rating.syncroItemId === result.id),
-      myInterest: myInterests.find(
-        (interest) => interest.syncroItemId === result.id
-      ),
-    }))
+    return results.map(
+      (result) =>
+        ({
+          ...result,
+          syncroItem: imdbItems.find((item) => item.id === result.id),
+          myRating: myRatings.find(
+            (rating) => rating.syncroItemId === result.id
+          ),
+          myInterest: myInterests.find(
+            (interest) => interest.syncroItemId === result.id
+          ),
+        } as ImdbRapidApiItem)
+    )
   }
 
   searchUsers = async (query: string) => {
