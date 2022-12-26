@@ -1,0 +1,55 @@
+_id: req_3602896da0104efd874fca38921f7865
+type: Request
+parentId: fld_9f9fa3eac90f4f78abfcab6a4cd7f068
+modified: 1671297819625
+created: 1671289457135
+url: http://192.168.0.4:3000/search
+name: find manga
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: q
+    value: uzumaki junji
+    disabled: false
+    id: pair_50d70a62f6df46ac89e5ba62fafa8619
+  - id: pair_a0357ebb7692414b8d6c693d28c4999d
+    name: ""
+    value: ""
+    description: ""
+  - id: pair_81cc5eed63ed4073b09768e239b983e3
+    name: ""
+    value: ""
+    description: ""
+  - name: type
+    value: manga
+    disabled: false
+    id: pair_db478db8abbf458c9c9b1872097a6984
+headers:
+  - name: Accept
+    value: application/json, text/plain, */*
+    id: pair_0c973213c58d45de916780e026582e6a
+  - name: Referer
+    value: ""
+    id: pair_a1b5a9aca03247ff8163d06c5681519c
+  - name: User-Agent
+    value: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
+      Gecko) ReactNativeDebugger/0.13.0 Chrome/87.0.4280.141 Electron/11.4.6
+      Safari/537.36
+    id: pair_98545b7d177749058c56e8432ac81afe
+  - name: authorization
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGJucnd5dzAwMDA4djd5OHo0cjh3Y3Q0IiwiaWF0IjoxNjcxMjg5NjcyLCJleHAiOjE3MDI4MjU2NzJ9.y2EwaES0ObYQFxUhRydfimlPcfDgOj5InNoeFVqLME0
+    id: pair_8c3654a2e75e4ae7a0c9c1457afda7e8
+  - id: pair_e043f65f01ab44258a35753dab9dbbb3
+    name: ""
+    value: ""
+    description: ""
+authentication: {}
+metaSortKey: -1671289457135
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,28 @@
+_id: req_d4eb091e4ec44ee5961a2b774a0b1141
+type: Request
+parentId: fld_9f9fa3eac90f4f78abfcab6a4cd7f068
+modified: 1671289455498
+created: 1671288493326
+url: https://api.myanimelist.net/v2/manga/2
+name: get manga MAL
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: fields
+    value: id,title,main_picture,alternative_titles,start_date,end_date,synopsis,mean,rank,popularity,num_list_users,num_scoring_users,nsfw,created_at,updated_at,media_type,status,genres,my_list_status,num_volumes,num_chapters,authors{first_name,last_name},pictures,background,related_anime,related_manga,recommendations,serialization{name}
+    disabled: false
+    id: pair_3530cbf3e14a4958972856c51ca2512c
+headers:
+  - name: Authorization
+    value: Bearer YOUR_TOKEN
+    id: pair_273de81678f14e1c979ea96264e2c0bd
+authentication: {}
+metaSortKey: -1671288493326
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

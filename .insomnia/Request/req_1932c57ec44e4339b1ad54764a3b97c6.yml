@@ -1,0 +1,29 @@
+_id: req_1932c57ec44e4339b1ad54764a3b97c6
+type: Request
+parentId: fld_2f4fb6484bc046c3ab66bd0008994c24
+modified: 1669128648516
+created: 1669125127006
+url: http://localhost:3000/search/google
+name: google search
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_655b6e6970b849f19ed7767e79b42a58
+    name: q
+    value: god of war
+    description: ""
+  - id: pair_f0b3bcf10e7b4d5bbe3bf5671d0b2a96
+    name: type
+    value: tv series
+    description: ""
+headers: []
+authentication: {}
+metaSortKey: -1664694149929
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

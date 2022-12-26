@@ -1,0 +1,21 @@
+_id: req_d0e7a21bd54a4b8c83e5fd1bf2cc2e5f
+type: Request
+parentId: fld_2f4fb6484bc046c3ab66bd0008994c24
+modified: 1669125122269
+created: 1665447289353
+url: https://id.twitch.tv/oauth2/token?client_id=3kulho9acu8tei61dngxk26id82cld&client_secret=sa1rdfvpe7f50d611swufhj5f42pgp&grant_type=client_credentialshttps://id.twitch.tv/oauth2/token?client_id=3kulho9acu8tei61dngxk26id82cld&client_secret=sa1rdfvpe7f50d611swufhj5f42pgp&grant_type=client_credentials
+name: get access token twitch
+description: ""
+method: POST
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1665447289353
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

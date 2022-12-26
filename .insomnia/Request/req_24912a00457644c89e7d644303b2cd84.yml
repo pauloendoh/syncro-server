@@ -1,0 +1,30 @@
+_id: req_24912a00457644c89e7d644303b2cd84
+type: Request
+parentId: fld_e501b57c181c4dbc8f611c1a9234ca83
+modified: 1661299693510
+created: 1661299610336
+url: http://localhost:3000/auth/login
+name: login
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"identificator": "paulo.endoh@gmail.com",
+    	"password": "paulo20"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_051cacb7bf564f87aec2b2941e92d526
+authentication: {}
+metaSortKey: -1661299491093
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

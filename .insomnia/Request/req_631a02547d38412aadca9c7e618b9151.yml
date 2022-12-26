@@ -1,0 +1,31 @@
+_id: req_631a02547d38412aadca9c7e618b9151
+type: Request
+parentId: wrk_c27fcbac909e4478a1de240f35ee91d1
+modified: 1660954983273
+created: 1656612322852
+url: http://localhost:3000/auth/signup
+name: signup
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"username": "test", 
+    	"email": "test@test.com", 
+    	"password": "paulo20"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_ed10f7b28dea46eca84ab4c4faa93c69
+authentication: {}
+metaSortKey: -1656612322852
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
