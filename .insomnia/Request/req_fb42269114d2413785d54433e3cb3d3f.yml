@@ -1,0 +1,23 @@
+_id: req_fb42269114d2413785d54433e3cb3d3f
+type: Request
+parentId: fld_9ca31a716fd54632a36555691dd14a9d
+modified: 1670872674399
+created: 1670809252779
+url: https://localhost:7101/current-savings
+name: New Request
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIiLCJuYmYiOjE2NzA4NjI2MjMsImV4cCI6MTY3MTQ2NzQyMywiaWF0IjoxNjcwODYyNjIzfQ.BlKMiHI-fd-K358-AQ9kEURPlMEB0n-DeM3HjfrlS7Q
+metaSortKey: -1670809252779
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

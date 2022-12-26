@@ -1,0 +1,21 @@
+_id: req_04fdc838ee1c40bdb1152b69d574b598
+type: Request
+parentId: wrk_c27fcbac909e4478a1de240f35ee91d1
+modified: 1670021772504
+created: 1670021771714
+url: https://www.igdb.com/games/devil-may-cry-5-playable-character-vergil
+name: New Request
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1670021771714
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

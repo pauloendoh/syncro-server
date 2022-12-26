@@ -1,0 +1,29 @@
+_id: req_6ffa1a16b0ac466396973555b3b8868f
+type: Request
+parentId: fld_f1011d4c48724a1a87ed6dbf99b74939
+modified: 1661299448914
+created: 1658071837001
+url: http://localhost:3000/clothings
+name: create clothing
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"name": "ronaldo"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_1261235520464e5abe02b9e4f6adc38c
+authentication: {}
+metaSortKey: -1658071837001
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

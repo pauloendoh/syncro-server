@@ -1,0 +1,36 @@
+_id: req_89132eca60de466e889a59582474d0eb
+type: Request
+parentId: fld_2f4fb6484bc046c3ab66bd0008994c24
+modified: 1671289460440
+created: 1670028434812
+url: https://api.igdb.com/v4/gamespclienhttps://api.igdb.com/v4/gamespclien
+name: get games
+description: ""
+method: POST
+body:
+  mimeType: text/plain
+  text: >-
+    fields rating,rating_count, name, first_release_date, summary;
+
+    where name = "Omori" | name = "League of Legends" | name = "Injustice: Gods Among Us Zatanna" & rating_count > 0;
+parameters: []
+headers:
+  - id: pair_5251463c23e646e6bf44d34233bee70d
+    name: Client-ID
+    value: 3kulho9acu8tei61dngxk26id82cld
+    description: ""
+  - name: Content-Type
+    value: text/plain
+    id: pair_4790dbca70bd4811919b048081b3e792
+authentication:
+  type: bearer
+  token: r0lfnus9xw4vits1balaegtuu1z30e
+  prefix: Bearer
+metaSortKey: -1667129486245.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

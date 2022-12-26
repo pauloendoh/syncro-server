@@ -1,0 +1,39 @@
+_id: req_ca61e195bb9c4754957a59dab55cccc1
+type: Request
+parentId: fld_2f4fb6484bc046c3ab66bd0008994c24
+modified: 1671289544735
+created: 1669208455455
+url: http://192.168.0.4:3000/search
+name: localhost find games
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: q
+    value: devil may cry
+    disabled: false
+    id: pair_5493bd3adb994c91b3991c39f4e66b0c
+  - name: type
+    value: game
+    disabled: false
+    id: pair_7c55b0ee1f744179afb929c6cc375b42
+headers:
+  - name: Accept
+    value: application/json, text/plain, */*
+  - name: Referer
+    value: ""
+  - name: User-Agent
+    value: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
+      Gecko) ReactNativeDebugger/0.13.0 Chrome/87.0.4280.141 Electron/11.4.6
+      Safari/537.36
+  - name: authorization
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbDlpdmJxM2MwMTY2djR2N2tteGxjcnRiIiwiaWF0IjoxNjcwMDA3MzcxLCJleHAiOjE3MDE1NDMzNzF9.ogyhsbs46L1mdwiDQ5b6bXAWwIumRfjGuyYXaDenrNY
+authentication: {}
+metaSortKey: -1669208455455
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

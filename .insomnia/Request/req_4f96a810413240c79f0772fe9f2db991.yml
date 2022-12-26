@@ -1,0 +1,21 @@
+_id: req_4f96a810413240c79f0772fe9f2db991
+type: Request
+parentId: fld_9f9fa3eac90f4f78abfcab6a4cd7f068
+modified: 1671370509384
+created: 1671290204882
+url: https://www.imdb.com/title/tt1474276/
+name: New Request
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1671290204882
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

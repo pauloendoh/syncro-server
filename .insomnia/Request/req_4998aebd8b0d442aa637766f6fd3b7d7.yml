@@ -1,0 +1,35 @@
+_id: req_4998aebd8b0d442aa637766f6fd3b7d7
+type: Request
+parentId: fld_9f9fa3eac90f4f78abfcab6a4cd7f068
+modified: 1671289236099
+created: 1671288561164
+url: https://myanimelist.net/v1/oauth2/authorize
+name: auth
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_a6dea67e0af4456ca4d842b01c93464d
+    name: response_type
+    value: code
+    description: ""
+  - id: pair_d0eaaa14cb944ff5ba0f1f68cfcce515
+    name: client_id
+    value: "03529cfdffc07a9e62371d54b85ca5a0\r\n"
+    description: ""
+    type: text
+    multiline: text/plain
+  - id: pair_b5cce68681c4487098841df9c8251367
+    name: state
+    value: ""
+    description: ""
+headers: []
+authentication: {}
+metaSortKey: -1671288561164
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

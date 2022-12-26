@@ -1,0 +1,34 @@
+_id: req_416ac66e64b54361a0cf5a1adc3f1c13
+type: Request
+parentId: fld_2f4fb6484bc046c3ab66bd0008994c24
+modified: 1670028445628
+created: 1667690218543
+url: https://api.igdb.com/v4/games
+name: get games
+description: ""
+method: POST
+body:
+  mimeType: text/plain
+  text: |
+    search "Omori"; fields *;
+parameters: []
+headers:
+  - id: pair_5251463c23e646e6bf44d34233bee70d
+    name: Client-ID
+    value: 3kulho9acu8tei61dngxk26id82cld
+    description: ""
+  - name: Content-Type
+    value: text/plain
+    id: pair_4790dbca70bd4811919b048081b3e792
+authentication:
+  type: bearer
+  token: r0lfnus9xw4vits1balaegtuu1z30e
+  prefix: Bearer
+metaSortKey: -1667690218543
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
