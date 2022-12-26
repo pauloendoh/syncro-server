@@ -145,4 +145,16 @@ export class InterestRepository {
       },
     })
   }
+
+  async findByIdAndUserId(id: string, userId: string) {
+    return this.prismaClient.interest.findFirst({
+      where: {
+        id,
+        userId,
+      },
+      include: {
+        syncroItem: true,
+      },
+    })
+  }
 }

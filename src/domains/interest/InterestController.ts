@@ -9,6 +9,7 @@ import {
   QueryParam,
 } from "routing-controllers"
 import { InterestService } from "./InterestService"
+import { UpdateSavedPositionDto } from "./types/UpdateSavedPositionDto"
 
 @JsonController()
 export class InterestController {
@@ -54,5 +55,13 @@ export class InterestController {
     @QueryParam("type", { required: true }) type: SyncroItemType
   ) {
     return this.interestService.findSavedItemsByType(user.id, type)
+  }
+
+  @Post("/update-saved-position")
+  async updateSavedPosition(
+    @CurrentUser({ required: true }) user: User,
+    @Body() body: UpdateSavedPositionDto
+  ) {
+    return this.interestService.updateSavedPosition(body, user.id)
   }
 }

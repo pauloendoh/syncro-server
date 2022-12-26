@@ -3,6 +3,7 @@ import { ForbiddenError, NotFoundError } from "routing-controllers"
 import { CustomPositionService } from "../custom-position/CustomPositionService"
 import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
 import { InterestRepository } from "./InterestRepository"
+import { UpdateSavedPositionDto } from "./types/UpdateSavedPositionDto"
 
 export class InterestService {
   constructor(
@@ -121,5 +122,37 @@ export class InterestService {
 
   async findSavedItemsByType(userId: string, type: SyncroItemType) {
     return this.interestRepo.findSavedItemsByType(userId, type)
+  }
+
+  async updateSavedPosition(
+    payload: UpdateSavedPositionDto,
+    requesterId: string
+  ) {
+    const found = await this.interestRepo.findByIdAndUserId(
+      payload.interestId,
+      requesterId
+    )
+
+    if (!found) throw new NotFoundError("Interest not found.")
+
+    const savedItems = await this.interestRepo.findSavedItemsByType(
+      requesterId,
+      found.syncroItem!.type
+    )
+
+    const prevIndex = savedItems.findIndex((i) => i.id === payload.interestId)
+    const targetIndex = payload.newPosition - 1
+
+    const saved = { ...savedItems[prevIndex] }
+
+    savedItems.splice(prevIndex, 1)
+    savedItems.splice(targetIndex, 0, saved)
+
+    const newItems = savedItems.map((i, index) => ({
+      ...i,
+      position: index + 1,
+    }))
+    await this.interestRepo.updateMany(newItems)
+    return true
   }
 }
