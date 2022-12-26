@@ -63,7 +63,7 @@ export class SearchService {
 
     return results.map((result) => ({
       ...result,
-      imdbItem: imdbItems.find((item) => item.id === result.id),
+      syncroItem: imdbItems.find((item) => item.id === result.id),
       myRating: myRatings.find((rating) => rating.syncroItemId === result.id),
       myInterest: myInterests.find(
         (interest) => interest.syncroItemId === result.id
