@@ -3,13 +3,9 @@ import myRedisClient from "../../../utils/redis/myRedisClient"
 import { redisKeys } from "../../../utils/redis/redisKeys"
 import { GoogleItemDto } from "../types/GoogleItemDto"
 
-type ExecParams = {
-  query: string
-}
-
 // CACHE THIS
 export class _SearchGoogleAndCache {
-  async exec(query: string): Promise<GoogleItemDto[]> {
+  async exec(query: string, excludeTerm?: string): Promise<GoogleItemDto[]> {
     const cached = await myRedisClient.get(redisKeys.googleSearch(query))
     if (cached) return JSON.parse(cached)
 
@@ -20,6 +16,7 @@ export class _SearchGoogleAndCache {
       q: query,
       cx: "d4e78f2a07f64473d",
       num: 10,
+      excludeTerms: excludeTerm,
     })
 
     const googleResultItems = response.data.items as GoogleItemDto[]

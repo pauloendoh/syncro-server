@@ -4,10 +4,6 @@ import { IgdbClient } from "../IgdbClient"
 import { IgdbCreateDto } from "../types/IgdbCreateDto"
 import { IgdbSearchDto } from "../types/IgdbSearchDto"
 
-type ExecParams = {
-  requesterId: string
-}
-
 // PE 1/3 - improve name?
 export class _VerifyGameTitlesInIgdb {
   constructor(

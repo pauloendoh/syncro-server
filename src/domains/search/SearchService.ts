@@ -43,14 +43,15 @@ export class SearchService {
     requesterId: string,
     itemType: SyncroItemType
   ): Promise<ImdbRapidApiItem[]> => {
-    const { results } = await this.imdbSearchClient.searchImdbItems(
+    const { results } = await this.imdbSearchClient.searchCacheImdbItems(
       query,
       itemType
     )
 
     if (!results) return []
 
-    const imdbIds = results.map((r) => r.id) || []
+    const imdbIds =
+      results.filter((r) => r.id.includes("/title")).map((r) => r.id) || []
     const imdbItems = await this.imdbItemRepository.findImdbItemsByIds(imdbIds)
     const myRatings = await this.ratingRepo.findRatingsByUserIdAndItemsIds(
       requesterId,

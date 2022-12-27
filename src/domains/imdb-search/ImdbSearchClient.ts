@@ -15,7 +15,7 @@ export class ImdbSearchClient {
     private redisClient = myRedisClient
   ) {}
 
-  async searchImdbItems(
+  async searchCacheImdbItems(
     query: string,
     itemType: SyncroItemType,
     apiNumber = 1
@@ -30,7 +30,10 @@ export class ImdbSearchClient {
         .get<ImdbResultResponseDto>(urls.imdbTitles(apiNumber), {
           params: {
             title: query,
-            titleType: itemType === "tvSeries" ? "tvSeries" : "movie", // PE 1/3 - for now, only tvSeries
+            titleType:
+              itemType === "tvSeries"
+                ? "tvSeries,short,tvMiniSeries,tvSpecial,tvShort"
+                : "movie,tvMovie", // PE 1/3 - for now, only tvSeries
           },
           headers: {
             "x-rapidapi-key":
@@ -61,7 +64,7 @@ export class ImdbSearchClient {
         e.response?.status === 429 &&
         apiNumber === 1
       )
-        return this.searchImdbItems(query, itemType, 2)
+        return this.searchCacheImdbItems(query, itemType, 2)
 
       throw e
     }
