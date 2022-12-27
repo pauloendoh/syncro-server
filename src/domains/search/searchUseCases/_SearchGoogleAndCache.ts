@@ -14,7 +14,7 @@ export class _SearchGoogleAndCache {
     const response = await customSearch.cse.list({
       auth: process.env.GOOGLE_SEARCH_API_KEY,
       q: query,
-      cx: "d4e78f2a07f64473d",
+      cx: process.env.GOOGLE_SEARCH_CX,
       num: 10,
       excludeTerms: excludeTerm,
     })
