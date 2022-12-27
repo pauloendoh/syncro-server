@@ -1,0 +1,31 @@
+_id: req_481d6fed3dcb4d35bd28c76d7e62f65a
+type: Request
+parentId: fld_2f4fb6484bc046c3ab66bd0008994c24
+modified: 1672105383948
+created: 1672105289036
+url: https://api.igdb.com/v4/covers
+name: igdb api artwork
+description: ""
+method: POST
+body:
+  mimeType: text/plain
+  text: where game = 26841;  fields *;
+parameters: []
+headers:
+  - id: pair_bac15e4ca6294659801c307512cb9227
+    name: client-id
+    value: 3kulho9acu8tei61dngxk26id82cld
+    description: ""
+  - name: Content-Type
+    value: text/plain
+authentication:
+  type: bearer
+  token: 6aogy8etjfutga6vadzfne795v28rd
+metaSortKey: -1672101448878.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

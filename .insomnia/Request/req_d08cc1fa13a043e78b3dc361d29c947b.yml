@@ -1,0 +1,46 @@
+_id: req_d08cc1fa13a043e78b3dc361d29c947b
+type: Request
+parentId: fld_2f4fb6484bc046c3ab66bd0008994c24
+modified: 1672103424050
+created: 1672103294273
+url: https://id.twitch.tv/oauth2/token
+name: igdb auth
+description: ""
+method: POST
+body: {}
+parameters:
+  - id: pair_e08fa9ac1971401cb5391ef265421658
+    name: client_id
+    value: 3kulho9acu8tei61dngxk26id82cld
+    description: ""
+  - id: pair_5c9814c427214d8f9a43de769585d7b3
+    name: client_secret
+    value: boj82yudfkb4s239e93tbhamnujoik
+    description: ""
+  - id: pair_378ef28f7fe941dab3a2d617f63d7916
+    name: grant_type
+    value: client_credentials
+    description: ""
+headers:
+  - id: pair_645053f568be47ceb7d8a48b306067fc
+    name: client_id
+    value: 3kulho9acu8tei61dngxk26id82cld
+    description: ""
+    disabled: false
+  - id: pair_6c205a3c6b6d473abf52584d568e8fdb
+    name: client_secret
+    value: boj82yudfkb4s239e93tbhamnujoik
+    description: ""
+  - id: pair_ca4203b364e34bf8b84361d4b0dd3799
+    name: grant_type
+    value: client_credentials
+    description: ""
+authentication: {}
+metaSortKey: -1672103294273
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

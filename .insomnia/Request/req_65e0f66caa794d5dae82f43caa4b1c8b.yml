@@ -1,0 +1,31 @@
+_id: req_65e0f66caa794d5dae82f43caa4b1c8b
+type: Request
+parentId: fld_2f4fb6484bc046c3ab66bd0008994c24
+modified: 1672099936318
+created: 1672099635429
+url: https://api.bing.microsoft.com/v7.0/search
+name: bing search
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: q
+    value: microsoft devices
+    disabled: false
+headers:
+  - name: Ocp-Apim-Subscription-Key
+    value: 32848e9cf70e4316a7b9dc24c089810f
+    id: pair_8b8b8f7ac00a4895b89fc90f088a0db2
+  - id: pair_86d6e987a8184ba780e6550b5583bbcd
+    name: ""
+    value: ""
+    description: ""
+authentication: {}
+metaSortKey: -1672099635429
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
