@@ -1,0 +1,32 @@
+_id: req_f41c98b4bffb4c0586bb0ed8382cf20e
+type: Request
+parentId: fld_2f4fb6484bc046c3ab66bd0008994c24
+modified: 1672105597312
+created: 1672103262328
+url: https://api.igdb.com/v4/games/
+name: igdb api
+description: ""
+method: POST
+body:
+  mimeType: text/plain
+  text: 'search "if found..."; fields rating, rating_count, url, name,
+    first_release_date, summary; '
+parameters: []
+headers:
+  - id: pair_bac15e4ca6294659801c307512cb9227
+    name: client-id
+    value: 3kulho9acu8tei61dngxk26id82cld
+    description: ""
+  - name: Content-Type
+    value: text/plain
+authentication:
+  type: bearer
+  token: 6aogy8etjfutga6vadzfne795v28rd
+metaSortKey: -1672103262328
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
