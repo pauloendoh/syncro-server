@@ -22,4 +22,8 @@ export class UserService {
           ?.ratings?.[0]?.ratingValue || null,
     }))
   }
+
+  async findNewUsers() {
+    return this.userRepo.findNewUsers()
+  }
 }

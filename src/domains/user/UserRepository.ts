@@ -142,4 +142,13 @@ export class UserRepository {
       },
     })
   }
+
+  findNewUsers() {
+    return this.prismaClient.user.findMany({
+      select: userSelectFields,
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  }
 }

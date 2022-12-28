@@ -22,4 +22,9 @@ export class UserController {
   ) {
     return this.userService.findUserItems(userId, requester.id)
   }
+
+  @Get("/new-users")
+  async findNewUsers() {
+    return this.userService.findNewUsers()
+  }
 }
