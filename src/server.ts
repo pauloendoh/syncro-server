@@ -14,9 +14,9 @@ import {
   RoutingControllersOptions,
 } from "routing-controllers"
 import { routingControllersToSpec } from "routing-controllers-openapi"
-import { createProfileForUsersWithoutProfile } from "./temp/createProfileForUsersWithoutProfile"
 import { validateJwt } from "./utils/auth/validateJwt"
 import { MyKafkaConsumer } from "./utils/kafka/_MyKafkaConsumer"
+import { addSocketServer } from "./utils/socket/addSocketServer"
 config()
 
 const routingControllersOptions: RoutingControllersOptions = {
@@ -64,14 +64,12 @@ app.use("/swagger", swaggerUiExpress.serve, swaggerUiExpress.setup(spec))
 
 const port = process.env.PORT || 3001
 
-const server = app.listen(port, () => {
+const httpServer = addSocketServer(app)
+
+httpServer.listen(port, () => {
   console.log(`
 🚀 Server ready at: http://localhost:${port}
 ⭐️ See sample requests: http://pris.ly/e/ts/rest-express#3-using-the-rest-api`)
-
-  // temp (remove when all production users have a profile)
-  createProfileForUsersWithoutProfile()
-
   const consumer = new MyKafkaConsumer()
   consumer.start()
 })
