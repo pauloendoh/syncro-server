@@ -19,7 +19,7 @@ export class _SearchGoogleAndCache {
       excludeTerms: excludeTerm,
     })
 
-    const googleResultItems = response.data.items as GoogleItemDto[]
+    const googleResultItems = (response.data.items as GoogleItemDto[]) || []
 
     myRedisClient.set(
       redisKeys.googleSearch(query),
