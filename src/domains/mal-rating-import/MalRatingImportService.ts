@@ -47,7 +47,7 @@ export class MalRatingImportService {
 
   async _getAnimesViaPuppeteer(username: string) {
     const browser = await puppeteer.launch({
-      // devtools: true,
+      // devtools: true, //
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     })
 
