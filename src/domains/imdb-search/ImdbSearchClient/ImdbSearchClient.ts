@@ -1,32 +1,31 @@
 import { SyncroItemType } from "@prisma/client"
-import { AxiosError } from "axios"
+import axios from "axios"
 import { InternalServerError } from "routing-controllers"
-import myImdbAxios from "../../utils/myImdbAxios"
-import myRedisClient from "../../utils/redis/myRedisClient"
-import { redisKeys } from "../../utils/redis/redisKeys"
-import { urls } from "../../utils/urls"
-import { ImdbItemDetailsResponse } from "../syncro-item/types/ImdbItemDetailsGetDto"
-import { ImdbResultResponseDto } from "./types/ImdbResultResponseDto"
+import myRedisClient from "../../../utils/redis/myRedisClient"
+import { redisKeys } from "../../../utils/redis/redisKeys"
+import { urls } from "../../../utils/urls"
+import igdbAxios from "../../igdb-search/utils/igdbAxios"
+import { ImdbItemDetailsResponse } from "../../syncro-item/types/ImdbItemDetailsGetDto"
+import { ImdbResultResponseDto } from "../types/ImdbResultResponseDto"
 
 const { RAPIDAPI_KEY, RAPIDAPI_KEY_2 } = process.env
 export class ImdbSearchClient {
-  constructor(
-    private imdbAxios = myImdbAxios,
-    private redisClient = myRedisClient
-  ) {}
+  constructor(private axios = igdbAxios, private redisClient = myRedisClient) {}
 
-  async searchCacheImdbItems(
-    query: string,
-    itemType: SyncroItemType,
-    apiNumber = 1
-  ): Promise<ImdbResultResponseDto> {
+  async searchCacheImdbItems(param: {
+    query: string
+    itemType: SyncroItemType
+    apiNumber?: number
+  }): Promise<ImdbResultResponseDto> {
+    const { query, itemType, apiNumber = 1 } = param
+
     try {
       const cached = await myRedisClient.get(
         redisKeys.imdbQueryResult(query, itemType)
       )
       if (cached) return JSON.parse(cached)
 
-      const result = await this.imdbAxios
+      const result = await this.axios
         .get<ImdbResultResponseDto>(urls.imdbTitles(apiNumber), {
           params: {
             title: query,
@@ -60,11 +59,12 @@ export class ImdbSearchClient {
       return result
     } catch (e) {
       if (
-        e instanceof AxiosError &&
-        e.response?.status === 429 &&
+        axios.isAxiosError(e) &&
+        e.response &&
+        e.response.status === 429 &&
         apiNumber === 1
       )
-        return this.searchCacheImdbItems(query, itemType, 2)
+        return this.searchCacheImdbItems({ query, itemType, apiNumber: 2 })
 
       throw e
     }
@@ -80,7 +80,7 @@ export class ImdbSearchClient {
       )
       if (cached) return JSON.parse(cached)
 
-      const result = await this.imdbAxios
+      const result = await this.axios
         .get<ImdbItemDetailsResponse>(urls.imdbTitleDetails(apiNumber), {
           params: {
             tconst: imdbId,
@@ -99,7 +99,7 @@ export class ImdbSearchClient {
         })
         .then((res) => res.data)
         .catch((e) => {
-          if (e instanceof AxiosError && e.response?.status === 429) throw e
+          if (axios.isAxiosError(e) && e.response?.status === 429) throw e
           throw new InternalServerError(
             e?.response?.data?.message || e?.message
           )
@@ -115,7 +115,7 @@ export class ImdbSearchClient {
       return result
     } catch (err) {
       if (
-        err instanceof AxiosError &&
+        axios.isAxiosError(err) &&
         err.response?.status === 429 &&
         apiNumber === 1
       )

@@ -1,5 +1,5 @@
 import { SyncroItem } from "@prisma/client"
-import { ImdbSearchClient } from "../../imdb-search/ImdbSearchClient"
+import { ImdbSearchClient } from "../../imdb-search/ImdbSearchClient/ImdbSearchClient"
 import { SyncroItemRepository } from "../SyncroItemRepository"
 
 type ExecParams = { syncroItem: SyncroItem | null; itemId: string }

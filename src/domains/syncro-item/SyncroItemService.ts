@@ -1,4 +1,4 @@
-import { ImdbSearchClient } from "../imdb-search/ImdbSearchClient"
+import { ImdbSearchClient } from "../imdb-search/ImdbSearchClient/ImdbSearchClient"
 import { MangaService } from "../manga/MangaService"
 import { SyncroItemRepository } from "./SyncroItemRepository"
 import { UseFindAndSaveGameDetails } from "./syncroItemUseCases/UseFindAndSaveGameDetails"

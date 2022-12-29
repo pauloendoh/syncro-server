@@ -1,6 +1,6 @@
 import { SyncroItemType } from "@prisma/client"
 import { _SearchAndCreateGames } from "../igdb-search/igdbSearchUseCases/_SearchAndCreateGames"
-import { ImdbSearchClient } from "../imdb-search/ImdbSearchClient"
+import { ImdbSearchClient } from "../imdb-search/ImdbSearchClient/ImdbSearchClient"
 import { ImdbRapidApiItem } from "../imdb-search/types/ImdbResultResponseDto"
 import { InterestRepository } from "../interest/InterestRepository"
 import { MangaService } from "../manga/MangaService"
@@ -43,10 +43,10 @@ export class SearchService {
     requesterId: string,
     itemType: SyncroItemType
   ): Promise<ImdbRapidApiItem[]> => {
-    const { results } = await this.imdbSearchClient.searchCacheImdbItems(
+    const { results } = await this.imdbSearchClient.searchCacheImdbItems({
       query,
-      itemType
-    )
+      itemType,
+    })
 
     if (!results) return []
 
