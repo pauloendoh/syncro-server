@@ -2,7 +2,11 @@ import { RatingsImportItem } from "@prisma/client"
 import axios from "axios"
 import { JSDOM } from "jsdom"
 import puppeteer from "puppeteer"
-import { InternalServerError, NotFoundError } from "routing-controllers"
+import {
+  ForbiddenError,
+  InternalServerError,
+  NotFoundError,
+} from "routing-controllers"
 import { RatingsImportRepository } from "../../rating-import/RatingsImportRepository"
 import { kafkaTopics } from "../../utils/kafka/kafkaTopics"
 import { myKafka } from "../../utils/kafka/myKafka"
@@ -23,7 +27,9 @@ export class MalRatingImportService {
     private ratingRepository = new RatingRepository()
   ) {}
 
-  async checkMalUser(username: string) {
+  async checkMalUser(username: string, requesterId: string) {
+    await this._checkAlreadyRatedThisWeek(requesterId)
+
     username = username.trim()
 
     const url = urls.malProfile(username)
@@ -45,9 +51,11 @@ export class MalRatingImportService {
   }
 
   async startAnimeImport(requesterId: string, username: string) {
+    await this._checkAlreadyRatedThisWeek(requesterId)
+
     const animeTitlesUrls = await this._getAnimesViaPuppeteer(username).catch(
       (e) => {
-        // TODO
+        // TODO feat/clbz1fkvh81940m1xb8qxcftw
         throw e
       }
     )
@@ -65,6 +73,15 @@ export class MalRatingImportService {
 
     this._produceKafkaMessages(newImportItems)
     return true
+  }
+
+  async _checkAlreadyRatedThisWeek(requesterId: string) {
+    const alreadyRatedThisWeek = await this.importRepository.alreadyImportedThisWeek(
+      requesterId,
+      "MyAnimeList"
+    )
+    if (alreadyRatedThisWeek)
+      throw new ForbiddenError("You already rated this week.")
   }
 
   async _getAnimesViaPuppeteer(username: string) {

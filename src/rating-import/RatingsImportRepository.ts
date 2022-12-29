@@ -98,4 +98,17 @@ export class RatingsImportRepository {
       },
     })
   }
+
+  async alreadyImportedThisWeek(userId: string, importFrom: string) {
+    return this.prismaClient.ratingsImportRequest.findFirst({
+      where: {
+        userId,
+        // @ts-expect-error
+        importFrom,
+        createdAt: {
+          gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+        },
+      },
+    })
+  }
 }

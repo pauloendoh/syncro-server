@@ -11,7 +11,7 @@ export class MalRatingImportController {
     @Param("username") username: string,
     @CurrentUser({ required: true }) requester: User
   ) {
-    return this.malRatingImportService.checkMalUser(username)
+    return this.malRatingImportService.checkMalUser(username, requester.id)
   }
 
   @Post("/confirm-and-start-anime-import/:username")
