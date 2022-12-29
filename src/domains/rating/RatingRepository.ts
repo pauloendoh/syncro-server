@@ -127,4 +127,15 @@ export class RatingRepository {
       },
     })
   }
+
+  async alreadyRated(userId: string, itemId: string) {
+    const found = await this.prismaClient.rating.findFirst({
+      where: {
+        userId,
+        syncroItemId: itemId,
+      },
+    })
+
+    return !!found
+  }
 }

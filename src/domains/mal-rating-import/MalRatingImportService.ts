@@ -156,13 +156,6 @@ export class MalRatingImportService {
       const malItemType =
         dom.window.document.querySelector(".information.type")?.textContent ||
         ""
-      if (malItemType.includes("Movie")) {
-        importRatingItem.status = "isMovie"
-        await this.importRepository.updateImportItem(importRatingItem)
-        await this._decrementRemainingItemsQty(importRatingItem.requestId)
-
-        return
-      }
 
       const googleResults = await this.googleSearchService.googleSearchAndCache(
         importRatingItem.originalTitle + " imdb"
@@ -177,16 +170,25 @@ export class MalRatingImportService {
       )
 
       if (foundSyncroItem) {
-        importRatingItem.status = "alreadyRated"
+        const alreadyRated = await this.ratingRepository.alreadyRated(
+          importRatingItem.userId!,
+          foundSyncroItem!.id
+        )
+
+        importRatingItem.status = alreadyRated
+          ? "alreadyRated"
+          : "importedSuccessfully"
       }
 
       if (!foundSyncroItem) {
+        const isMovie = malItemType.includes("Movie")
+
         foundSyncroItem = await this.itemRepo.createSyncroItem({
           id: firstImdbResult.imdbId,
           avgRating: 0,
           ratingCount: 0,
           title: importRatingItem.originalTitle,
-          type: "tvSeries",
+          type: isMovie ? "movie" : "tvSeries",
           imageUrl: firstImdbResult.imageUrl,
         })
 
