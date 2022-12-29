@@ -8,25 +8,43 @@ import { ImdbSearchClient } from "./ImdbSearchClient"
 
 describe("ImdbSearchClient", () => {
   describe("searchCacheImdbItems", () => {
-    test("when not cached + and when axios throws 429 error -> should call axios with apiNumber 2", async () => {
+    describe("when not cached", () => {
       const mockedRedis = mock(Redis)
       when(mockedRedis.get(anything())).thenResolve(null)
 
-      const mockedAxios = new MockAdapter(igdbAxios)
-      mockedAxios
-        .onGet(urls.imdbTitles(1))
-        .replyOnce(429)
-        .onGet(urls.imdbTitles(2))
-        .replyOnce(200)
+      test("and when axios throws 429 error -> should call axios with apiNumber 2", async () => {
+        const mockedAxios = new MockAdapter(igdbAxios)
+        mockedAxios
+          .onGet(urls.imdbTitles(1))
+          .replyOnce(429)
+          .onGet(urls.imdbTitles(2))
+          .replyOnce(200)
 
-      const sut = new ImdbSearchClient(igdbAxios, instance(mockedRedis))
+        const sut = new ImdbSearchClient(igdbAxios, instance(mockedRedis))
 
-      await sut.searchCacheImdbItems({
-        query: "query",
-        itemType: "tvSeries",
+        await sut.searchCacheImdbItems({
+          query: "query",
+          itemType: "tvSeries",
+        })
+
+        expect(mockedAxios.history.get[1].url).toBe(urls.imdbTitles(2))
       })
 
-      expect(mockedAxios.history.get[1].url).toBe(urls.imdbTitles(2))
+      test("and when itemType = 'tvSeries', should call igdb with titleType = 'tvSeries,short,tvMiniSeries,tvSpecial,tvShort'", async () => {
+        const mockedAxios = new MockAdapter(igdbAxios)
+        mockedAxios.onGet(urls.imdbTitles(1)).replyOnce(200)
+
+        const sut = new ImdbSearchClient(igdbAxios, instance(mockedRedis))
+
+        await sut.searchCacheImdbItems({
+          query: "query",
+          itemType: "tvSeries",
+        })
+
+        expect(mockedAxios.history.get[0].params.titleType).toBe(
+          "tvSeries,short,tvMiniSeries,tvSpecial,tvShort"
+        )
+      })
     })
   })
 
