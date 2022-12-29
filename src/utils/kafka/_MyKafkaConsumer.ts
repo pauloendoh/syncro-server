@@ -24,18 +24,18 @@ export class MyKafkaConsumer {
 
     await this.consumer.run({
       eachMessage: async ({ topic, partition, message, heartbeat }) => {
-        console.log("🍕 Kafka Consuming: ", {
-          topic,
-          value: message.value?.toString(),
-        })
-
-        if (topic === kafkaTopics.importRatingItem) {
-          const value = message.value?.toString()
-          if (value)
-            this.malRatingImportService.processRatingsImportItem(
-              JSON.parse(value)
-            )
-        }
+        // disable kafka for now
+        // console.log("🍕 Kafka Consuming: ", {
+        //   topic,
+        //   value: message.value?.toString(),
+        // })
+        // if (topic === kafkaTopics.importRatingItem) {
+        //   const value = message.value?.toString()
+        //   if (value)
+        //     this.malRatingImportService.processRatingsImportItem(
+        //       JSON.parse(value)
+        //     )
+        // }
       },
     })
   }
