@@ -9,7 +9,7 @@ import {
   QueryParam,
 } from "routing-controllers"
 import { EmailService } from "../email/EmailService"
-import { AuthService } from "./AuthService"
+import { AuthService } from "./AuthService/AuthService"
 import { LoginDto } from "./types/LoginDto"
 import { PasswordResetPostDto } from "./types/PasswordResetPostDto"
 import { RegisterDto } from "./types/RegisterDto"
