@@ -8,15 +8,10 @@ import {
   Post,
 } from "routing-controllers"
 import { RatingService } from "./RatingService"
-import { _StartMyAnimeListImport } from "./ratingUseCases/_StartMyAnimeListImport"
-import { ImportRatingsPostDto } from "./types/ImportRatingsPostDto"
 
 @JsonController()
 export class RatingController {
-  constructor(
-    private ratingService = new RatingService(),
-    private _importFromMyAnimeList = new _StartMyAnimeListImport()
-  ) {}
+  constructor(private ratingService = new RatingService()) {}
 
   @Get("/me/ratings")
   async findMyRatings(@CurrentUser({ required: true }) user: User) {
@@ -37,13 +32,5 @@ export class RatingController {
     @Body() body: Rating
   ) {
     return this.ratingService.saveRating(body, user.id)
-  }
-
-  @Post("/import-ratings")
-  async importRatings(
-    @CurrentUser({ required: true }) user: User,
-    @Body() body: ImportRatingsPostDto
-  ) {
-    return this._importFromMyAnimeList.exec(user.id, body.username)
   }
 }

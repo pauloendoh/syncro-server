@@ -2,6 +2,7 @@ import { RatingsImportItem } from "@prisma/client"
 import axios from "axios"
 import { JSDOM } from "jsdom"
 import puppeteer from "puppeteer"
+import { InternalServerError, NotFoundError } from "routing-controllers"
 import { RatingsImportRepository } from "../../rating-import/RatingsImportRepository"
 import { kafkaTopics } from "../../utils/kafka/kafkaTopics"
 import { myKafka } from "../../utils/kafka/myKafka"
@@ -22,7 +23,28 @@ export class MalRatingImportService {
     private ratingRepository = new RatingRepository()
   ) {}
 
-  async init(requesterId: string, username: string) {
+  async checkMalUser(username: string) {
+    username = username.trim()
+
+    const url = urls.malProfile(username)
+    const response = await this.myAxios.get(url).catch((e) => {
+      if (e.response.status === 404) {
+        throw new NotFoundError("User not found on MAL")
+      }
+      throw new InternalServerError(e.message)
+    })
+
+    const dom = new JSDOM(response.data)
+    const div = dom.window.document.querySelector(".user-image")
+    const imageUrl = div?.querySelector("img")?.getAttribute("src") || ""
+
+    return {
+      username,
+      url,
+    }
+  }
+
+  async startAnimeImport(requesterId: string, username: string) {
     const animeTitlesUrls = await this._getAnimesViaPuppeteer(username).catch(
       (e) => {
         // TODO
@@ -41,7 +63,7 @@ export class MalRatingImportService {
       importRequestId: newImportRequest.id,
     })
 
-    await this._produceKafkaMessages(newImportItems)
+    this._produceKafkaMessages(newImportItems)
     return true
   }
 
@@ -136,6 +158,11 @@ export class MalRatingImportService {
       let foundSyncroItem = await this.itemRepo.findSyncroItemById(
         firstImdbResult.imdbId
       )
+
+      if (foundSyncroItem) {
+        importRatingItem.status = "alreadyRated"
+      }
+
       if (!foundSyncroItem) {
         foundSyncroItem = await this.itemRepo.createSyncroItem({
           id: firstImdbResult.imdbId,
@@ -145,9 +172,12 @@ export class MalRatingImportService {
           type: "tvSeries",
           imageUrl: firstImdbResult.imageUrl,
         })
+
+        importRatingItem.status = "importedSuccessfully"
       }
 
       importRatingItem.syncroItemId = foundSyncroItem.id
+
       await this.importRepository.updateImportItem(importRatingItem)
 
       await this.ratingRepository.upsertRating({
@@ -160,6 +190,10 @@ export class MalRatingImportService {
 
       return
     } catch (e) {
+      importRatingItem.status = "errorOrNotFound"
+      await this.importRepository.updateImportItem(importRatingItem)
+      await this._decrementRemainingItemsQty(importRatingItem.requestId)
+
       if (e instanceof Error)
         console.log("Error processing import item", e.message)
       throw e
@@ -172,6 +206,10 @@ export class MalRatingImportService {
     )
 
     if (importRequest.remainingItemsQty === 0) {
+      this.importRepository.updateImportRequestStatus(
+        requestId,
+        "finishedSuccessfully"
+      )
       this.notificationService.createFinishRatingImportNotification(requestId)
     }
 

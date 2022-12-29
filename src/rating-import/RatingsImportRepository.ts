@@ -1,4 +1,4 @@
-import { RatingsImportItem } from "@prisma/client"
+import { RatingsImportItem, RatingsImportRequestStatus } from "@prisma/client"
 import myPrismaClient from "../utils/myPrismaClient"
 
 export class RatingsImportRepository {
@@ -81,6 +81,20 @@ export class RatingsImportRepository {
       },
       include: {
         syncroItem: true,
+      },
+    })
+  }
+
+  async updateImportRequestStatus(
+    requestId: string,
+    status: RatingsImportRequestStatus
+  ) {
+    return this.prismaClient.ratingsImportRequest.update({
+      where: {
+        id: requestId,
+      },
+      data: {
+        status,
       },
     })
   }
