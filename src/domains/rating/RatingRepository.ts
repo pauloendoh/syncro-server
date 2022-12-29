@@ -132,7 +132,7 @@ export class RatingRepository {
     const found = await this.prismaClient.rating.findFirst({
       where: {
         userId,
-        syncroItemId: itemId, //
+        syncroItemId: itemId, // test
       },
     })
 
