@@ -5,6 +5,7 @@ import { config } from "dotenv"
 import { sign } from "jsonwebtoken"
 import { BadRequestError, NotFoundError } from "routing-controllers"
 import myPrismaClient from "../../utils/myPrismaClient"
+import { validateUsernameOrThrow } from "../../utils/text/isValidUsername/validateUsernameOrThrow"
 import { EmailService } from "../email/EmailService"
 import { UserTokenRepository } from "../user-token/UserTokenRepository"
 import { UserRepository } from "../user/UserRepository"
@@ -38,13 +39,7 @@ export class AuthService {
     })
     if (usernameExists) throw new BadRequestError("Username already in use.")
 
-    // Checking if username is valid
-    const regex = new RegExp(/^[a-zA-Z0-9]+$/)
-    if (!regex.test(dto.username)) {
-      throw new BadRequestError(
-        "Invalid characters for username. Only use letters and numbers."
-      )
-    }
+    validateUsernameOrThrow(dto.username)
 
     const salt = await genSalt(10)
     const hashedPassword = await hash(dto.password1, salt)

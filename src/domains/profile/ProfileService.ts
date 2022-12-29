@@ -1,5 +1,6 @@
 import { BadRequestError } from "routing-controllers"
 import { isValidSite } from "../../utils/text/isValidSite"
+import { validateUsernameOrThrow } from "../../utils/text/isValidUsername/validateUsernameOrThrow"
 import { urls } from "../../utils/urls"
 import { UserRepository } from "../user/UserRepository"
 import { ProfileRepository } from "./ProfileRepository"
@@ -25,6 +26,8 @@ export default class ProfileService {
   updateProfile = async (requesterId: string, profile: ProfilePutDto) => {
     profile.website = profile.website.trim()
     profile.username = profile.username.trim()
+
+    validateUsernameOrThrow(profile.username)
 
     if (profile.website.length > 0 && !isValidSite(profile.website))
       throw new BadRequestError("Website is not valid.")
