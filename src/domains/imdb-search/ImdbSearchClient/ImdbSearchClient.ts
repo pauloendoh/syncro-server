@@ -70,15 +70,17 @@ export class ImdbSearchClient {
     }
   }
 
+  // PE 1/3 - params
   async fetchAndCacheImdbItemDetails(
     imdbId: string,
-    apiNumber = 1
+    apiNumber = 1,
+    overwriteCache = false
   ): Promise<ImdbItemDetailsResponse> {
     try {
       const cached = await this.redisClient.get(
         redisKeys.imdbItemDetails(imdbId)
       )
-      if (cached) return JSON.parse(cached)
+      if (cached && !overwriteCache) return JSON.parse(cached)
 
       const result = await this.axios
         .get<ImdbItemDetailsResponse>(urls.imdbTitleDetails(apiNumber), {

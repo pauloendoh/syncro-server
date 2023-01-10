@@ -1,10 +1,12 @@
-import { SyncroItemType } from "@prisma/client"
-import { IsString } from "class-validator"
+import { IsEnum, IsString } from "class-validator"
+
+const types = ["tvSeries", "movie", "game", "manga", "users"] as const
+type SearchType = typeof types[number]
 
 export class SearchParams {
   @IsString()
   q: string
 
-  @IsString()
-  type: SyncroItemType | "users"
+  @IsEnum(types)
+  type: "tvSeries" | "movie" | "game" | "manga" | "users"
 }

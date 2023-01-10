@@ -4,6 +4,7 @@ import {
   Get,
   JsonController,
   Post,
+  Put,
   QueryParam,
 } from "routing-controllers"
 import { SyncroItemService } from "./SyncroItemService"
@@ -35,5 +36,13 @@ export class SyncroItemController {
       requesterId: requester.id,
       userId,
     })
+  }
+
+  @Put("/syncro-item/rating")
+  async updateItemRating(
+    @CurrentUser({ required: true }) user: User,
+    @QueryParam("id", { required: true }) id: string
+  ) {
+    return this.syncroItemService.updateItemRating(id)
   }
 }
