@@ -152,4 +152,29 @@ export class SyncroItemRepository {
       data: createInput,
     })
   }
+
+  async findUserItemsCount(userId: string) {
+    const items = await this.prismaClient.syncroItem.count({
+      where: {
+        OR: [
+          {
+            ratings: {
+              some: {
+                userId,
+              },
+            },
+          },
+          {
+            interests: {
+              some: {
+                userId,
+              },
+            },
+          },
+        ],
+      },
+    })
+
+    return items
+  }
 }

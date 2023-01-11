@@ -59,4 +59,8 @@ export class SyncroItemService {
 
     return foundItem
   }
+
+  async getUserItemsCount(userId: string) {
+    return this.itemRepo.findUserItemsCount(userId)
+  }
 }

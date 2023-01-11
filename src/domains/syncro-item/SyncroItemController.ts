@@ -3,6 +3,7 @@ import {
   CurrentUser,
   Get,
   JsonController,
+  Param,
   Post,
   Put,
   QueryParam,
@@ -44,5 +45,13 @@ export class SyncroItemController {
     @QueryParam("id", { required: true }) id: string
   ) {
     return this.syncroItemService.updateItemRating(id)
+  }
+
+  @Get("/user/:id/items-count")
+  async getUserItemsCount(
+    @Param("id") id: string,
+    @CurrentUser({ required: true }) user: User
+  ) {
+    return this.syncroItemService.getUserItemsCount(id)
   }
 }
