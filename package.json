@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "build:release": "tsc && npx prisma migrate deploy",
-    "start": "node --optimize_for_size --max_old_space_size=460 dist/src/server.js",
+    "start": "node --optimize_for_size --max_old_space_size=460 dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only --clear --debounce 250 src/server.ts",
     "migrate": "npx prisma migrate dev",
     "postinstall": "prisma generate",
