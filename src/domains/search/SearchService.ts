@@ -8,7 +8,7 @@ import { MangaService } from "../manga/MangaService"
 import { RatingRepository } from "../rating/RatingRepository"
 import { SyncroItemRepository } from "../syncro-item/SyncroItemRepository"
 import { UserRepository } from "../user/UserRepository"
-import { SearchParams } from "./types/SearchParams"
+import { SearchParams } from "../_shared/types/SearchParams"
 
 export class SearchService {
   constructor(

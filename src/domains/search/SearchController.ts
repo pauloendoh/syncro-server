@@ -5,8 +5,8 @@ import {
   JsonController,
   QueryParams,
 } from "routing-controllers"
+import { SearchParams } from "../_shared/types/SearchParams"
 import { SearchService } from "./SearchService"
-import { SearchParams } from "./types/SearchParams"
 
 @JsonController("/search")
 export class SearchController {
