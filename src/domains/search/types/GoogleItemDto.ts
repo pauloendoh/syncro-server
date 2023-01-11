@@ -10,6 +10,7 @@ export interface GoogleItemDto {
   formattedUrl: string
   htmlFormattedUrl: string
   pagemap: Pagemap
+  fileFormat?: string
 }
 
 interface Pagemap {

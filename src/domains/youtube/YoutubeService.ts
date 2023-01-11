@@ -20,7 +20,7 @@ export class YoutubeService {
 
     const query = this.getQuery(itemFound)
 
-    const googleResults = await this.searchGoogle.exec(query)
+    const googleResults = await this.searchGoogle.exec({ query })
 
     const youtubeResults = googleResults.filter((result) => {
       return result.link.includes("https://www.youtube.com/watch?v=")

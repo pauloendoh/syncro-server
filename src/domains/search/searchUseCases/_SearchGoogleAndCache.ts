@@ -5,7 +5,13 @@ import { GoogleItemDto } from "../types/GoogleItemDto"
 
 // CACHE THIS
 export class _SearchGoogleAndCache {
-  async exec(query: string, excludeTerm?: string): Promise<GoogleItemDto[]> {
+  async exec(params: {
+    query: string
+    excludeTerm?: string
+    isImage?: boolean
+  }): Promise<GoogleItemDto[]> {
+    const { query, excludeTerm, isImage = false } = params
+
     const cached = await myRedisClient.get(redisKeys.googleSearch(query))
     if (cached) return JSON.parse(cached)
 
@@ -17,6 +23,7 @@ export class _SearchGoogleAndCache {
       cx: process.env.GOOGLE_SEARCH_CX,
       num: 10,
       excludeTerms: excludeTerm,
+      searchType: isImage ? "image" : undefined,
     })
 
     const googleResultItems = (response.data.items as GoogleItemDto[]) || []

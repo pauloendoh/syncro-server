@@ -18,7 +18,9 @@ export class MangaService {
   ) {}
 
   async searchAndCreateMangas(query: string) {
-    const googleResults = await this._searchGoogle.exec(query + " manga mal")
+    const googleResults = await this._searchGoogle.exec({
+      query: query + " manga mal",
+    })
 
     const filteredMangaDto = this._filterAndCreateMangaDto(googleResults)
 
@@ -97,5 +99,23 @@ export class MangaService {
 
     if (isNaN(year)) return null
     return year
+  }
+
+  async findMangaPanels(itemId: string) {
+    const item = await this.itemRepo.findSyncroItemById(itemId)
+    if (!item) throw new BadRequestError("Item not found")
+
+    const originalTitle = item.title.split("(")[0].trim()
+    const query = `${originalTitle} manga panels`
+
+    const googleResults = await this._searchGoogle.exec({
+      query,
+      excludeTerm: undefined,
+      isImage: true,
+    })
+
+    const images = googleResults.filter((r) => r?.fileFormat !== "image/")
+
+    return images.map((r) => r.link)
   }
 }

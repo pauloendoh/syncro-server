@@ -16,7 +16,9 @@ export class _SearchAndCreateGames {
   ) {}
 
   async exec({ query }: ExecParams) {
-    const googleResults = await this._searchGoogle.exec(query + " igdb")
+    const googleResults = await this._searchGoogle.exec({
+      query: query + " igdb",
+    })
     const igdbDtos: IgdbCreateDto[] = googleResults
       .filter((r) => r.link.includes("igdb.com/games"))
       .filter((r) => !r.link.includes("/reviews"))

@@ -6,7 +6,7 @@ export class GoogleSearchService {
   constructor(private useGoogleSearchAndCache = new _SearchGoogleAndCache()) {}
 
   async googleSearchAndCache(query: string) {
-    return this.useGoogleSearchAndCache.exec(query)
+    return this.useGoogleSearchAndCache.exec({ query })
   }
 
   async getFirstImdbResult(googleResults: GoogleItemDto[]) {
