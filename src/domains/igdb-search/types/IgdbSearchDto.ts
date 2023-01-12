@@ -5,4 +5,5 @@ export interface IgdbSearchDto {
   rating: number
   rating_count: number
   summary: string
+  url: string
 }

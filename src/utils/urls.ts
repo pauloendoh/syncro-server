@@ -14,6 +14,7 @@ export const urls = {
       ? "https://imdb8.p.rapidapi.com/title/get-overview-details"
       : "https://online-movie-database.p.rapidapi.com/title/get-overview-details",
   igdbGames: "https://api.igdb.com/v4/games",
+  igdbCovers: "https://api.igdb.com/v4/covers",
   malProfile: (username: string) =>
     `https://myanimelist.net/profile/${username}`,
   malUserAnimeList: (username: string) =>

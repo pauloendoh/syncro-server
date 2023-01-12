@@ -1,4 +1,5 @@
 import { SyncroItemType } from "@prisma/client"
+import { GameService } from "../game/GameService"
 import { GoogleSearchService } from "../google-search/GoogleSearchService"
 import { _SearchAndCreateGames } from "../igdb-search/igdbSearchUseCases/_SearchAndCreateGames"
 import { ImdbSearchClient } from "../imdb-search/ImdbSearchClient/ImdbSearchClient"
@@ -19,7 +20,8 @@ export class SearchService {
     private userRepo = new UserRepository(),
     private _searchGames = new _SearchAndCreateGames(),
     private mangaService = new MangaService(),
-    private googleSearchService = new GoogleSearchService()
+    private googleSearchService = new GoogleSearchService(),
+    private gameService = new GameService()
   ) {}
 
   overallSearch = async (params: SearchParams, requesterId: string) => {
@@ -85,5 +87,11 @@ export class SearchService {
 
   async googleSearch(params: SearchParams) {
     return this.googleSearchService.googleSearchAndCache(params.q)
+  }
+
+  async searchMore(params: SearchParams) {
+    if (params.type !== "game") return []
+
+    return this.gameService.searchAndCreateMoreGames(params.q)
   }
 }

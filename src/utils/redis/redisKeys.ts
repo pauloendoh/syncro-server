@@ -9,4 +9,6 @@ export const redisKeys = {
   googleSearch: (query: string) => `google/${query}`,
   igdbGameTitles: (titles: string[]) => `igdb/${titles.join(",")}`,
   syncroItem: (itemId: string) => `syncro-item/${itemId}`,
+  igdbGameImages: (igdbGameIds: number[]) =>
+    `igdb/images?ids${igdbGameIds.join(",")}`,
 }
