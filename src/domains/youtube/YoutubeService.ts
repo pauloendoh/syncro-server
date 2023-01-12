@@ -20,7 +20,9 @@ export class YoutubeService {
 
     const query = this.getQuery(itemFound)
 
-    const googleResults = await this.searchGoogle.exec({ query })
+    const googleResults = await this.searchGoogle.exec({ query, 
+    siteSearch: 'www.youtube.com'
+    })
 
     const youtubeResults = googleResults.filter((result) => {
       return result.link.includes("https://www.youtube.com/watch?v=")
@@ -29,6 +31,7 @@ export class YoutubeService {
     if (itemFound.type === "game") {
       return youtubeResults
         .sort((a, b) => (a.title.toLowerCase().includes("gameplay") ? -1 : 1))
+        .sort((a,b) => (a.title.toLowerCase().includes(itemFound.title.toLowerCase()) ? -1: 1))
         .slice(0, 4)
         .map((y) => y.link)
     }
@@ -39,9 +42,9 @@ export class YoutubeService {
   private getQuery(item: SyncroItem) {
     if (item.type === "manga") return ""
     if (item.type === "movie" || item.type === "tvSeries") {
-      return `${item.title} ${item.year} trailer youtube`
+      return `${item.title} ${item.year} trailer`
     }
 
-    return `${item.title} ${item.year} gameplay trailer youtube`
+    return `${item.title} ${item.year} gameplay`
   }
 }

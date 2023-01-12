@@ -8,9 +8,11 @@ export class _SearchGoogleAndCache {
   async exec(params: {
     query: string
     excludeTerm?: string
-    isImage?: boolean
+    isImage?: boolean, 
+    siteSearch?: string, 
   }): Promise<GoogleItemDto[]> {
-    const { query, excludeTerm, isImage = false } = params
+    const { query, excludeTerm, isImage = false, siteSearch
+    } = params
 
     const cached = await myRedisClient.get(redisKeys.googleSearch(query))
     if (cached) return JSON.parse(cached)
@@ -23,6 +25,8 @@ export class _SearchGoogleAndCache {
       cx: process.env.GOOGLE_SEARCH_CX,
       num: 10,
       excludeTerms: excludeTerm,
+      siteSearch,
+      siteSearchFilter: siteSearch ? 'i' : undefined, 
       searchType: isImage ? "image" : undefined,
     })
 
