@@ -97,6 +97,9 @@ export class UserRepository {
           },
         },
       },
+      orderBy: {
+        createdAt: "asc"
+      }
     })
   }
 
