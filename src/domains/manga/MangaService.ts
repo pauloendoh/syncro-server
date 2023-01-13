@@ -52,7 +52,9 @@ export class MangaService {
       })
       .map((r) => ({
         mangaMalUrl: r.link,
-        image: r.pagemap["cse_thumbnail"][0]["src"],
+        image: r.pagemap["cse_thumbnail"]?.[0]["src"] ||
+        r.pagemap.product?.[0]["image"] || 
+        "",
         title: r.pagemap["product"]?.[0].name || r.title,
         avgRating: upToNDecimals(
           Number(r.pagemap["aggregaterating"]?.[0]?.ratingvalue || 0),
